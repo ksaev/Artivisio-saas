@@ -16,6 +16,7 @@ Offre des ressources, des offres d’emploi/missions, un espace utilisateur avec
 - **Espace utilisateur & abonnements**  
   Inscription/connexion via Clerk, tableau de bord avec gestion des favoris et alertes  
   Gestion des abonnements payants (accès premium aux offres exclusives, contenus coaching avancés)
+  Dashboard, Recrutement, Candidatures
 
 - **Paiement en ligne**  
   Intégration Stripe pour la gestion des abonnements et paiements sécurisés
