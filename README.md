@@ -126,12 +126,6 @@ Notre SaaS évolue en permanence pour offrir une expérience enrichie aux candid
 * 📊 **Dashboard personnel** : Nombre de candidatures, taux de réponses, temps moyen jusqu’à entretien
 * 🔗 **Connexion LinkedIn / CV automatique** : Import intelligent de données pour onboarding express
 
----
-
-## 📖 Licence
-
-Ce projet est sous licence **MIT**.  
-Voir le fichier [LICENSE](./LICENSE) pour plus de détails.
 
 
 ## 📖 Licence
