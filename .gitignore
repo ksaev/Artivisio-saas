@@ -46,6 +46,3 @@ jest.config.js
 # Build output
 dist/
 build/
-
-#git
-.git/
