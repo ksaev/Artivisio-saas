@@ -1,0 +1,27 @@
+<<<<<<< HEAD
+.foldOnHover {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.foldOnHover:hover {
+  transform: rotateX(-20deg);
+}
+
+.perspective {
+  perspective: 1000px;
+}
+=======
+.foldOnHover {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.foldOnHover:hover {
+  transform: rotateX(-20deg);
+}
+
+.perspective {
+  perspective: 1000px;
+}
+>>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9

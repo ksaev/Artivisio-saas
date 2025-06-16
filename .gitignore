@@ -1,0 +1,51 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+.vercel/
+clean-repo/
+
+# Logs
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Env files (except local)
+.env*
+!.env.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/
+!prisma/schema.prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# IDEs
+.vscode/
+.idea/
+
+# Tests / Coverage
+coverage/
+*.lcov
+jest.config.js
+
+# Clerk
+.clerk/
+
+# Build output
+dist/
+build/
+
+#git
+.git/
