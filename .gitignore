@@ -19,14 +19,13 @@ clean-repo/
 
 # Env files (except local)
 .env*
-!.env.local
+.env.local
 
 # System files
 .DS_Store
 Thumbs.db
 
 # Prisma
-prisma/
 !prisma/schema.prisma
 prisma/dev.db
 prisma/dev.db-journal
