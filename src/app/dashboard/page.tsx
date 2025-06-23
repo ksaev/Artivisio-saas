@@ -26,6 +26,7 @@ import { FloatingCard, PulsingElement } from "@/components/3d-animations"
 import { BarChart, DonutChart, LineChart, MetricCard, ProgressRing } from "@/components/charts"
 import {useUser} from "@clerk/nextjs" 
 import { Loader2 } from "lucide-react"
+import { spawn } from "node:child_process"
 
 export default function DashboardPage() {
   const [activeGoals, setActiveGoals] = useState(3)
@@ -135,11 +136,11 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
-              Bonjour 
+              Bonjour    
               {!isLoaded ? (
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               ) : (
-                ` ${user?.firstName || "Membre"} ! 👋`
+                <span className="text-primary "> {user?.firstName || "Membre"} ! 👋</span>
               )}
             </h1>
             <p className="text-muted-foreground">

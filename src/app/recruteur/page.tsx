@@ -21,11 +21,7 @@ import { Building, Users, Calendar, Eye, Mail, Phone, FileText, Plus, Edit, Vide
 import { FloatingCard } from "@/components/3d-animations"
 import {
   offres,
-<<<<<<< HEAD
   candidatures,
-=======
-  candidats,
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
   recruteurs,
   getCandidatsByOffre,
   getOffresByRecruteur,
@@ -62,11 +58,7 @@ export default function RecruteurPage() {
   const stats = {
     offresActives: mesOffres.filter((o) => o.statut === "active").length,
     totalCandidats: mesOffres.reduce((total, offre) => total + getCandidatsByOffre(offre.id).length, 0),
-<<<<<<< HEAD
     entretiensAPlanifier: candidatures.filter((c) => mesOffres.some((o) => o.id === c.offreId) && c.statut === "nouveau")
-=======
-    entretiensAPlanifier: candidats.filter((c) => mesOffres.some((o) => o.id === c.offreId) && c.statut === "nouveau")
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
       .length,
     entretiensAVenir: mesEntretiens.filter((e) => e.statut === "planifie" && new Date(e.date) > new Date()).length,
   }
@@ -152,11 +144,7 @@ export default function RecruteurPage() {
                 Bonjour <span className="text-primary">{recruteur?.nom}</span> !
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl">
-<<<<<<< HEAD
                 Gérez vos offres d'emploi et suivez vos candidatures
-=======
-                Gérez vos offres d'emploi et suivez vos candidats
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
               </p>
             </div>
             <div className="text-right">
@@ -206,26 +194,15 @@ export default function RecruteurPage() {
       {/* Contenu principal */}
       <section className="py-8 bg-background flex-1">
         <div className="container mx-auto px-4">
-<<<<<<< HEAD
           <Tabs defaultValue="candidatures" className="space-y-8">
             <TabsList className="grid w-full grid-cols-3 lg:w-fit">
               <TabsTrigger value="candidatures">Candidats</TabsTrigger>
-=======
-          <Tabs defaultValue="candidats" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-3 lg:w-fit">
-              <TabsTrigger value="candidats">Candidats</TabsTrigger>
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
               <TabsTrigger value="offres">Mes Offres</TabsTrigger>
               <TabsTrigger value="entretiens">Entretiens</TabsTrigger>
             </TabsList>
 
-<<<<<<< HEAD
             {/* Gestion des candidatures */}
             <TabsContent value="candidatures" className="space-y-6">
-=======
-            {/* Gestion des candidats */}
-            <TabsContent value="candidats" className="space-y-6">
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
               {/* Sélection d'offre */}
               <Card className="border-primary/10">
                 <CardContent className="p-6">
@@ -249,11 +226,7 @@ export default function RecruteurPage() {
                 </CardContent>
               </Card>
 
-<<<<<<< HEAD
               {/* Liste des candidatures */}
-=======
-              {/* Liste des candidats */}
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
               {selectedOffre ? (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -372,7 +345,7 @@ export default function RecruteurPage() {
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Mes Offres d'Emploi</h2>
                 <Button>
-                  <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 mr-2" />
                   Nouvelle offre
                 </Button>
               </div>
@@ -420,11 +393,7 @@ export default function RecruteurPage() {
                               </Button>
                               <Button size="sm" onClick={() => setSelectedOffre(offre.id)}>
                                 <Eye className="h-4 w-4 mr-2" />
-<<<<<<< HEAD
                                 Voir candidatures
-=======
-                                Voir candidats
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
                               </Button>
                             </div>
                           </div>
@@ -445,11 +414,7 @@ export default function RecruteurPage() {
 
               <div className="grid gap-6">
                 {mesEntretiens.map((entretien) => {
-<<<<<<< HEAD
                   const candidat = candidatures.find((c) => c.id === entretien.candidatId)
-=======
-                  const candidat = candidats.find((c) => c.id === entretien.candidatId)
->>>>>>> 1b1496bf72dad4b594a800223841d9a1a935d6f9
                   const offre = offres.find((o) => o.id === entretien.offreId)
                   const isUpcoming = new Date(entretien.date) > new Date()
 

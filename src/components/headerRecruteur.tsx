@@ -15,40 +15,49 @@ import { useTheme } from "next-themes"
 import { UserButton } from "@clerk/nextjs"
 import { ConfirmSwitchButton } from "./confirmBox"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 type NotificationBellProps = {
   count: number
 }
 
-export function HeaderSign({ count }: NotificationBellProps) {
+export function HeaderSignRecruteur({ count }: NotificationBellProps) {
   const [isOpen, setIsOpen] = useState(false)
   const { theme, setTheme } = useTheme()
 
   return (
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Left: Logo */}
-          <div className="flex items-center space-x-4 w-full md:w-auto">
-            <Link href="/" className="flex items-center space-x-2 group">
-              <div className="h-15 w-15 overflow-hidden rounded-lg">
-                <Image
-                  src="/logo_artivisio.png"
-                  alt="Logo ArtiVisio"
-                  width={50}
-                  height={50}
-                  className="object-cover"
-                />
-              </div>
-              <span className="text-lg font-bold text-foreground">ArtiVisio</span>
-            </Link>
-          </div>
+      <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div className="h-15 w-15 overflow-hidden rounded-lg">
+              <Image
+                src="/logo_artivisio.png"
+                alt="Logo ArtiVisio"
+                width={50}
+                height={50}
+                className="object-cover"
+              />
+            </div>
+            <span className="text-xl font-bold text-foreground">ArtiVisio</span>
+          </Link>
 
           {/* Right: Desktop - Notifications, Theme, User */}
           <div className="hidden md:flex items-center space-x-5">
-            {/*Changement de mode*/}
             <div className="relative">
-              <ConfirmSwitchButton />
+             <ConfirmSwitchButton />
             </div>
-            {/* Notification */}
+          {/* Notification */}
             <div className="relative">
               <Button variant="ghost" size="icon">
                 <Bell className="h-6 w-6" />
@@ -119,18 +128,7 @@ export function HeaderSign({ count }: NotificationBellProps) {
                   <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
 
                   <div className="flex flex-col space-y-4 mt-8">
-                    <Link href="/candidatures">
-                      <button>Mes candidatures</button>
-                    </Link>
-                    <Link href="/offres">
-                      <button>Mes offres d'emploi</button>
-                    </Link>
-                    <Link href="/candidatures/entretiens">
-                      <button>Mes entretiens</button>
-                    </Link>
-                    <div className="flex flex-col space-y-4 mt-8">
-                      <ConfirmSwitchButton/>
-                    </div>
+                    <ConfirmSwitchButton/>
                   </div>
                 </SheetContent>
               </Sheet>
