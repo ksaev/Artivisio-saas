@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle} from "@/components/ui/sheet"
 import { Menu, Moon, Sun, User } from "lucide-react"
 import { useTheme } from "next-themes"
 
@@ -79,8 +79,10 @@ export function Header() {
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Ouvrir le menu</span>
+              <Menu className="h-5 w-5" />
+                <SheetHeader>
+                  <SheetTitle><span className="sr-only">Ouvrir le menu</span></SheetTitle>
+                </SheetHeader>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
