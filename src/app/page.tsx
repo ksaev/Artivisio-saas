@@ -47,8 +47,8 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <FloatingCard className="absolute inset-0 -z-10">
+      <section className="relative min-h-[calc(100vh-4rem)] sm:min-h-screen pt-16 flex items-center overflow-hidden">
+      <FloatingCard className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-black/40 z-10" />
           <Image
             src="/home.png"
