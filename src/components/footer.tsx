@@ -146,10 +146,15 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3">
-              <li className="flex items-center space-x-2">
-                <Mail className="h-4 w-4 text-accent" />
-                <span className="text-primary-foreground/80 text-sm">contact@artivisio.com</span>
-              </li>
+            <li className="flex items-center space-x-2">
+              <Mail className="h-4 w-4 text-accent" />
+              <a
+                href="mailto:contact@artivisio.com"
+                className="text-primary-foreground/80 text-sm hover:underline"
+              >
+                contact@artivisio.com
+              </a>
+            </li>
               <li className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-accent" />
                 <span className="text-primary-foreground/80 text-sm">+225 07 58 98 80 04</span>

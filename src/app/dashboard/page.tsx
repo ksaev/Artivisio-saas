@@ -442,7 +442,7 @@ export default function DashboardPage() {
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-foreground">Mes Offres Sauvegardées</h2>
                 <Button asChild>
-                  <Link href="/offres">
+                  <Link href="/offres-user">
                     Parcourir les offres
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>

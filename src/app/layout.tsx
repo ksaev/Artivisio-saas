@@ -24,11 +24,10 @@ export default function RootLayout({
 
   // Détection de routes
   const isRecruteur = pathname.startsWith("/recruteur")
-  const isSign = pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up")
-  const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/dashboard")
-  const isCandidat = pathname.startsWith("/candidatures") || pathname.startsWith("/offres") || pathname.startsWith("/candidatures/entretiens") || pathname.startsWith("/candidatures/nouvelle")
+  const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/dashboard") 
+  const isCandidat = pathname.startsWith("/offres-user") ||pathname.startsWith("/candidatures") || pathname.startsWith("/candidatures/entretiens") || pathname.startsWith("/candidatures/nouvelle") 
 
-  const showHeaderSign = isSign || isAuth || isCandidat
+  const showHeaderSign = isAuth || isCandidat
   const showDefaultHeader = !isRecruteur && !showHeaderSign
 
   return (
@@ -72,12 +71,6 @@ export default function RootLayout({
 
             {/* FOOTER */}
             {showDefaultHeader && <Footer />}
-
-            {isSign && (
-              <footer>
-                <Footer />
-              </footer>
-            )}
 
           </ThemeProvider>
         </body>
