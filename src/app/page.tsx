@@ -61,16 +61,16 @@ export default function HomePage() {
 
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center bg-no-repeat bg-cover opacity-10 pointer-events-none" />
 
-        <div className="container mx-auto px-6 md:px-12 relative text-white">
-          <div className="grid lg:grid-cols-2 gap-y-12 gap-x-20 items-center">
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Sculptez votre <span className="text-primary">carrière d'exception</span> avec ArtiVisio
+        <div className="container mx-auto px-6 md:px-12 relative text-white text-center">
+          <div className="grid lg:grid-cols-1 gap-y-12 gap-x-20 items-center">
+            <div className="space-y-6 mx-auto">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight items-center text-center justify-center">
+                Sculptez votre <span className="text-primary">carrière d'exception</span> <br /> avec ArtiVisio
               </h1>
-              <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+              <p className="text-xl text-white/80 leading-relaxed max-w-2xl mx-auto ">
                 Coaching premium, opportunités exclusives et accompagnement personnalisé pour les professionnels d'élite en Afrique de l'Ouest.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-center text-center justify-center">
                 <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-primary/90">
                   <Link href="/coaching">Coaching Premium <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
@@ -78,7 +78,7 @@ export default function HomePage() {
                   <Link href="/offres">Opportunités Exclusives</Link>
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-8 pt-6">
+              <div className="flex flex-wrap gap-8 pt-6 items-center text-center justify-center">
                 {[
                   { value: "500+", label: "Accompagnement" },
                   { value: "98%", label: "Taux de réussite" },
@@ -101,7 +101,7 @@ export default function HomePage() {
           <div className="text-center mb-14">
             <Badge variant="outline" className="mb-4 border-primary/20">Services Premium</Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Excellence sur mesure</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto items-center text-center justify-center">
               Des services d'exception conçus pour les professionnels ambitieux
             </p>
           </div>
