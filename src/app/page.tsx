@@ -64,11 +64,6 @@ export default function HomePage() {
         <div className="container mx-auto px-6 md:px-12 relative text-white">
           <div className="grid lg:grid-cols-2 gap-y-12 gap-x-20 items-center">
             <div className="space-y-6">
-              <PulsingElement>
-                <Badge variant="secondary" className="w-fit bg-white/10 text-white border-white/20">
-                  <Sparkles className="w-3 h-3 mr-1" /> Excellence & Innovation
-                </Badge>
-              </PulsingElement>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                 Sculptez votre <span className="text-primary">carrière d'exception</span> avec ArtiVisio
               </h1>
@@ -85,7 +80,7 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap gap-8 pt-6">
                 {[
-                  { value: "500+", label: "Leaders accompagnés" },
+                  { value: "500+", label: "Accompagnement" },
                   { value: "98%", label: "Taux de réussite" },
                   { value: "5+", label: "Pays couverts" },
                 ].map((item, idx) => (
