@@ -62,8 +62,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center bg-no-repeat bg-cover opacity-10 pointer-events-none" />
 
         <div className="container mx-auto px-6 md:px-12 relative text-white text-center">
-          <div className="grid lg:grid-cols-1 gap-y-12 gap-x-20 items-center">
-            <div className="space-y-6 mx-auto">
+          <div className="grid lg:grid-cols-1 gap-y-8 gap-x-20 items-center">
+            <div className="space-y-4 mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight items-center text-center justify-center">
                 Sculptez votre <span className="text-primary">carrière d'exception</span> <br /> avec ArtiVisio
               </h1>
@@ -78,9 +78,9 @@ export default function HomePage() {
                   <Link href="/offres">Opportunités Exclusives</Link>
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-8 pt-6 items-center text-center justify-center">
+              <div className="flex flex-wrap gap-6 pt-4 items-center text-center justify-center">
                 {[
-                  { value: "500+", label: "Accompagnement" },
+                  { value: "500+", label: "Leaders accompagnés" },
                   { value: "98%", label: "Taux de réussite" },
                   { value: "5+", label: "Pays couverts" },
                 ].map((item, idx) => (
