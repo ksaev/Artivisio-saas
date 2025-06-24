@@ -87,7 +87,7 @@ export default function HomePage() {
                 {[
                   { value: "500+", label: "Leaders accompagnés" },
                   { value: "98%", label: "Taux de réussite" },
-                  { value: "C-Level", label: "Positions atteintes" },
+                  { value: "5+", label: "Pays couverts" },
                 ].map((item, idx) => (
                   <div key={idx} className="text-center min-w-[100px]">
                     <div className="text-2xl font-bold text-white">{item.value}</div>
@@ -96,36 +96,6 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-
-            <div className="relative">
-              <FloatingCard>
-                <div className="w-full max-w-[220px] h-[380px] bg-white/10 rounded-xl shadow-2xl">
-                <Image
-                    src="/home.png"
-                    alt="Coaching professionnel premium"
-                    fill
-                    priority
-                    className="object-cover w-full h-full opacity-30"
-                  />
-                </div>
-              </FloatingCard>
-              <div className="absolute -bottom-6 -left-6 bg-card p-4 rounded-xl shadow-lg border">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                        <img src={`/homme${i}.jpg`} alt={`image${i}`} className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm text-foreground">+500 executives</div>
-                    <div className="text-xs text-muted-foreground">nous font confiance</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
