@@ -4,9 +4,69 @@ import {SiLinkedin } from "react-icons/si"
 import {SiX} from "react-icons/si"
 import {SiFacebook} from "react-icons/si"
 import {SiTelegram} from "react-icons/si"
-import {SiInstagram} from "react-icons/si"
+import { SiInstagram } from "react-icons/si"
+import { ArrowUp } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react"
+import { toast } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast"
+
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}
 
 export function Footer() {
+
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [email, setEmail] = useState("")
+  const currentYear = new Date().getFullYear()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return toast.error("Veuillez entrer votre adresse e-mail.")
+  
+    const promise = fetch("/api/newsletter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+  
+    toast.promise(promise, {
+      loading: "Envoi en cours...",
+      success: () => {
+        setEmail("")
+        return (
+      <div className="relative pr-2 pt-2 justify-center items-center">
+        <div>
+          <span className="justify-center items-center">
+            🎉 Merci pour votre inscription <strong>{email}</strong> !<br />
+            Vous recevrez bientôt nos nouveautés.
+          </span>
+        </div>
+        <br />
+        <div className="absolute bottom-2 p-1 left-0 h-2 w-full bg-blue-500 animate-toastbar rounded-full" />
+      </div>
+
+        )
+      },
+      error: "Une erreur est survenue. Veuillez réessayer.",
+    })
+  }
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12">
@@ -170,11 +230,45 @@ export function Footer() {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center">
-          <p className="text-primary-foreground/60 text-sm">
-            © {new Date().getFullYear()} ArtiVisio. Tous droits réservés.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center">
+
+            <p className="text-white text-center md:text-left">
+              © {new Date().getFullYear()} ArtiVisio. Tous droits réservés.
+            </p>
+              <div className="flex items-center space-x-6 mt-4 md:mt-0">
+                <Link href="/mentions" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  Mention légale 
+                </Link>
+              
+                <Link href="/politique" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  Politique de confidentialité
+                </Link>
+
+                <Link href="/conditions" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  Conditions d'utilisation
+                </Link>
+              
+                <Link href="/cookies" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                  Politique de cookies
+                </Link>
+
+              </div>
+          </div>
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <Button
+        aria-label="Revenir en haut"
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-2xl transition-all duration-300 z-50 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+      >
+        <ArrowUp className="h-6 w-6" />
+      </Button>
+
+
     </footer>
   )
 }

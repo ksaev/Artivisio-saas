@@ -55,7 +55,7 @@ export default function HomePage() {
             alt="Coaching professionnel premium"
             fill
             priority
-            className="object-cover w-full h-full opacity-80"
+            className="object-cover w-full h-full opacity-75"
           />
         </FloatingCard>
 
@@ -65,11 +65,10 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-1 gap-y-8 gap-x-20 items-center">
             <div className="space-y-4 mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight items-center text-center justify-center">
-                Sculptez votre <span className="text-primary">carrière d'exception</span> <br /> avec ArtiVisio
+                Faites décoller votre <span className="text-opacity-100 bg-opacity-70 text-primary bg-white">carrière d'exception</span> <br /> avec ArtiPro
               </h1>
               <p className="text-xl text-white/80 leading-relaxed max-w-2xl mx-auto ">
-                Coaching premium, opportunités exclusives et accompagnement personnalisé pour les professionnels d'élite en Afrique de l'Ouest.
-              </p>
+                Coaching premium, offres exclusives et accompagnement intelligent pour les talents et recruteurs d’Afrique de l’Ouest. Avec ArtiPro, suivez vos candidatures, soyez notifié de vos entretiens à venir, et gérez vos recrutements avec notre assistant IA.              </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center text-center justify-center">
                 <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-primary/90">
                   <Link href="/coaching">Coaching Premium <ArrowRight className="ml-2 h-5 w-5" /></Link>
@@ -78,7 +77,7 @@ export default function HomePage() {
                   <Link href="/offres">Opportunités Exclusives</Link>
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-6 pt-4 items-center text-center justify-center">
+              <div className="flex flex-wrap gap-8 pt-6 items-center text-center justify-center">
                 {[
                   { value: "500+", label: "Leaders accompagnés" },
                   { value: "98%", label: "Taux de réussite" },
