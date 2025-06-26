@@ -54,10 +54,6 @@ export default function RootLayout({
       >
       <html lang="fr" suppressHydrationWarning>
         <title>Artivsio</title>
-        <head>
-        {/* Balise Google Analytics */}
-          <CookieConsent />
-        </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
 
@@ -86,7 +82,7 @@ export default function RootLayout({
             {/* FOOTER */}
             {showDefaultHeader && <Footer />}
             
-            <CookieConsent/>
+            <CookieConsent />
 
           </ThemeProvider>
         </body>
