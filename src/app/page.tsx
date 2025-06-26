@@ -55,7 +55,7 @@ export default function HomePage() {
             alt="Coaching professionnel premium"
             fill
             priority
-            className="object-cover w-full h-full opacity-75"
+            className="object-cover w-full h-full opacity-90"
           />
         </FloatingCard>
 
@@ -65,10 +65,11 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-1 gap-y-8 gap-x-20 items-center">
             <div className="space-y-4 mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight items-center text-center justify-center">
-                Faites décoller votre <span className="text-opacity-100 bg-opacity-70 text-primary bg-white">carrière d'exception</span> <br /> avec ArtiPro
+                Faites décoller votre <span className="text-opacity-100 bg-opacity-90 text-primary">carrière d'exception</span> <br /> avec ArtiPro
               </h1>
               <p className="text-xl text-white/80 leading-relaxed max-w-2xl mx-auto ">
-                Coaching premium, offres exclusives et accompagnement intelligent pour les talents et recruteurs d’Afrique de l’Ouest. Avec ArtiPro, suivez vos candidatures, soyez notifié de vos entretiens à venir, et gérez vos recrutements avec notre assistant IA.              </p>
+                Coaching expert et offres exclusives pour booster votre carrière en Afrique de l’Ouest. Suivez vos candidatures et maîtrisez vos recrutements.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center text-center justify-center">
                 <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-primary/90">
                   <Link href="/coaching">Coaching Premium <ArrowRight className="ml-2 h-5 w-5" /></Link>
