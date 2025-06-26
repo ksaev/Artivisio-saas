@@ -55,7 +55,7 @@ export default function HomePage() {
             alt="Coaching professionnel premium"
             fill
             priority
-            className="object-cover w-full h-full opacity-90"
+            className="object-cover w-full h-full opacity-80"
           />
         </FloatingCard>
 
