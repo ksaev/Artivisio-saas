@@ -58,7 +58,7 @@ export default function CookieConsent() {
     <div className="fixed bottom-0 w-full bg-black text-white px-4 py-3 flex justify-between items-center z-50">
       <p className="text-sm">
         Ce site utilise des cookies pour améliorer votre expérience.{" "}
-        <a href="/politique-de-cookies" className="underline">En savoir plus</a>
+        <a href="/cookies" className="underline">En savoir plus</a>
       </p>
       <div className="flex gap-2">
         <button onClick={decline} className="bg-red-600 text-white px-3 py-1 rounded">Refuser</button>
