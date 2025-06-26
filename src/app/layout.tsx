@@ -56,17 +56,7 @@ export default function RootLayout({
         <title>Artivsio</title>
         <head>
         {/* Balise Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDGG3LBBVJ"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-NDGG3LBBVJ');
-            `,
-          }}
-        />
+          <CookieConsent />
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>

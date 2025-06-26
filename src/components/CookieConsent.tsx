@@ -9,44 +9,53 @@ export default function CookieConsent() {
     const consent = localStorage.getItem("cookie_consent")
     if (!consent) {
       setVisible(true)
+    } else if (consent === "true") {
+      // Consentement déjà donné → charger GA
+      loadGoogleAnalytics()
     }
   }, [])
 
   const acceptCookies = () => {
-    localStorage.setItem("cookie_consent", "accepted")
-
-    // 👉 Déclare localement dataLayer de manière sûre
-    const win = window as unknown as { dataLayer: any[] }
-    win.dataLayer = win.dataLayer || []
-
-    function gtag(...args: any[]) {
-      win.dataLayer.push(args)
-    }
-
-    gtag('js', new Date())
-    gtag('config', 'G-NDGG3LBBVJ') // remplace par ton vrai ID
-
+    localStorage.setItem("cookie_consent", "true")
     setVisible(false)
+    loadGoogleAnalytics()
+  }
+
+  const rejectCookies = () => {
+    localStorage.setItem("cookie_consent", "false")
+    setVisible(false)
+  }
+
+  const loadGoogleAnalytics = () => {
+    // Insère dynamiquement le script de Google
+    const script1 = document.createElement("script")
+    script1.src = "https://www.googletagmanager.com/gtag/js?id=G-NDGG3LBBVJ"
+    script1.async = true
+    document.head.appendChild(script1)
+
+    const script2 = document.createElement("script")
+    script2.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NDGG3LBBVJ');
+    `
+    document.head.appendChild(script2)
   }
 
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:right-auto z-50 bg-white border shadow-lg p-4 rounded-xl max-w-md mx-auto text-sm sm:text-base">
-      <p className="mb-3 text-gray-800">
-        Ce site utilise des cookies pour analyser le trafic et améliorer votre expérience. En cliquant sur "Accepter", vous consentez à leur utilisation.
+    <div className="fixed bottom-0 inset-x-0 bg-gray-900 text-white px-6 py-4 z-50 flex flex-col sm:flex-row justify-between items-center shadow-lg">
+      <p className="text-sm mb-2 sm:mb-0 max-w-xl">
+        Ce site utilise des cookies pour améliorer votre expérience.{" "}
+        <a href="/cookies" className="underline text-primary">En savoir plus</a>
       </p>
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={() => setVisible(false)}
-          className="px-4 py-2 text-gray-600 hover:text-gray-800"
-        >
+      <div className="flex gap-2">
+        <button onClick={rejectCookies} className="bg-white text-gray-900 px-4 py-1 rounded hover:bg-gray-200 transition">
           Refuser
         </button>
-        <button
-          onClick={acceptCookies}
-          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
-        >
+        <button onClick={acceptCookies} className="bg-primary px-4 py-1 rounded text-white font-semibold hover:bg-primary-dark transition">
           Accepter
         </button>
       </div>
