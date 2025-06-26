@@ -1,54 +1,69 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void
-    dataLayer: any[]
+    gtag?: (...args: any[]) => void
   }
 }
-"use client"
 
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+  return match ? decodeURIComponent(match[2]) : null
+}
+
+function setCookie(name: string, value: string, days: number) {
+  if (typeof document === "undefined") return
+  const expires = new Date(Date.now() + days * 864e5).toUTCString()
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`
+}
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem("cookieConsent")
+    const consent = getCookie("cookie_consent")
     if (!consent) {
+      window.gtag?.("consent", "default", {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+      })
       setVisible(true)
     }
   }, [])
 
-  const acceptCookies = () => {
-    // Autorise le stockage analytics (Google Consent Mode v2)
+  const accept = () => {
+    setCookie("cookie_consent", "granted", 365)
     window.gtag?.("consent", "update", {
+      ad_storage: "granted",
       analytics_storage: "granted",
     })
+    setVisible(false)
+  }
 
-    // Émet un événement personnalisé pour GTM
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({ event: "consent_analytics_granted" })
-
-    // Masquer la bannière + mémoriser le choix
-    localStorage.setItem("cookieConsent", "true")
+  const decline = () => {
+    setCookie("cookie_consent", "denied", 365)
+    window.gtag?.("consent", "update", {
+      ad_storage: "denied",
+      analytics_storage: "denied",
+    })
     setVisible(false)
   }
 
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 p-4 text-center shadow-lg">
-      <p className="text-sm text-gray-800 mb-2">
-        Ce site utilise des cookies pour mesurer l’audience. Acceptez-vous ?
+    <div className="fixed bottom-0 w-full bg-black text-white px-4 py-3 flex justify-between items-center z-50">
+      <p className="text-sm">
+        Ce site utilise des cookies pour améliorer votre expérience.{" "}
+        <a href="/politique-de-cookies" className="underline">En savoir plus</a>
       </p>
-      <button
-        onClick={acceptCookies}
-        className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-blue-700 transition"
-      >
-        J’accepte
-      </button>
+      <div className="flex gap-2">
+        <button onClick={decline} className="bg-red-600 text-white px-3 py-1 rounded">Refuser</button>
+        <button onClick={accept} className="bg-primary px-3 py-1 text-white rounded">Accepter</button>
+      </div>
     </div>
   )
 }
