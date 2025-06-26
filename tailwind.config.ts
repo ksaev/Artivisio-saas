@@ -26,7 +26,7 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#8B4513", // Saddle Brown
+          DEFAULT: "#8B4513",
           50: "#FDF8F3",
           100: "#F9EDE0",
           200: "#F0D4B8",
@@ -34,19 +34,19 @@ const config: Config = {
           400: "#D4A574",
           500: "#C08F58",
           600: "#A67C52",
-          700: "#8B4513", // Main brown
+          700: "#8B4513",
           800: "#6F3610",
           900: "#52280C",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#D2B48C", // Tan
+          DEFAULT: "#D2B48C",
           50: "#FAF7F2",
           100: "#F5EFE5",
           200: "#EBDCC7",
           300: "#E1C9A9",
           400: "#D7B68B",
-          500: "#D2B48C", // Main tan
+          500: "#D2B48C",
           600: "#C5A373",
           700: "#B8925A",
           800: "#9A7A4A",
@@ -54,13 +54,13 @@ const config: Config = {
           foreground: "#1F1F1F",
         },
         accent: {
-          DEFAULT: "#DEB887", // Burlywood
+          DEFAULT: "#DEB887",
           50: "#FBF9F5",
           100: "#F7F3EB",
           200: "#EFE7D3",
           300: "#E7DBBB",
           400: "#DFCFA3",
-          500: "#DEB887", // Main burlywood
+          500: "#DEB887",
           600: "#D4A96F",
           700: "#CA9A57",
           800: "#A67F47",
@@ -110,6 +110,18 @@ const config: Config = {
           "0%, 100%": { transform: "scale3d(1, 1, 1)" },
           "50%": { transform: "scale3d(1.05, 1.05, 1.05)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        shine: {
+          "0%": { backgroundPosition: "-200%" },
+          "100%": { backgroundPosition: "200%" },
+        },
+        gradientY: {
+          "0%, 100%": { backgroundPosition: "center top" },
+          "50%": { backgroundPosition: "center bottom" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -117,10 +129,13 @@ const config: Config = {
         float: "float 6s ease-in-out infinite",
         "rotate-3d": "rotate-3d 20s linear infinite",
         "pulse-3d": "pulse-3d 2s ease-in-out infinite",
+        marquee: "marquee 30s linear infinite",
+        "gradient-y": "gradientY 6s ease-in-out infinite",
+        shine: "shine 3s linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+}
 
 export default config

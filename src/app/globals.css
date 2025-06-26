@@ -87,3 +87,14 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary;
 }
+
+.animate-gradient-y {
+  background-size: 100% 200%;
+}
+
+.animate-shine {
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+}
+
+

@@ -1,3 +1,6 @@
+"use client"
+
+
 import { GoogleTagManager } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
@@ -10,12 +13,10 @@ import { HeaderSignRecruteur } from "@/components/headerRecruteur"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import CookieConsent from "@/components/CookieConsent"
+import AnnouncementBar from "@/components/AnnouncementBar"
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
-
-const tagManager = process.env.NEXT_PUBLIC_GTM_ID!
-
 
 export default function RootLayout({
   children,
@@ -32,10 +33,11 @@ export default function RootLayout({
     >
       <html lang="fr">
         {/* Intégration officielle GTM */}
-        <GoogleTagManager gtmId={tagManager} />
+        <GoogleTagManager gtmId="GTM-MGSWXGTP" />
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <Header />
+            <AnnouncementBar />
             <main>{children}</main>
             <Footer />
             <CookieConsent />

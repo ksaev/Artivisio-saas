@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Briefcase, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, X } from "lucide-react"
 import {SiLinkedin } from "react-icons/si"
