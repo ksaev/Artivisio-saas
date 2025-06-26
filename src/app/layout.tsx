@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
@@ -7,69 +8,91 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { HeaderSign } from "@/components/headerSign"
-import CookieConsent from "@/components/CookieConsent"
 import { HeaderSignRecruteur } from "@/components/headerRecruteur"
 import {
   ClerkProvider,
 } from "@clerk/nextjs"
 import { dark } from '@clerk/themes'
 import { frFR } from '@clerk/localizations'
-import type { Metadata } from "next"
+import CookieConsent from "react-cookie-consent"
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  const pathname = usePathname()
+const GTM_ID = "GTM-MGSWXGTP" // Remplace par ton GTM ID réel
 
-  // Détection de routes
+function loadGTM(id: string) {
+  if (!id) return
+  if (document.getElementById("gtm-script")) return // éviter doublon
+
+  // Injecte le script GTM dans le head
+  const script = document.createElement("script")
+  script.async = true
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${id}`
+  script.id = "gtm-script"
+  document.head.appendChild(script)
+
+  // Initialise dataLayer
+  window.dataLayer = window.dataLayer || []
+  function gtag(...args: any[]) {
+    window.dataLayer.push(arguments)
+  }
+  window.gtag = gtag
+
+  // Envoie config initiale
+  window.gtag('js', new Date())
+  window.gtag('config', id, { 'send_page_view': true })
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const [consent, setConsent] = useState<boolean | null>(null)
+
   const isRecruteur = pathname.startsWith("/recruteur")
-  const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/dashboard") 
-  const isCandidat = pathname.startsWith("/offres-user") ||pathname.startsWith("/candidatures") || pathname.startsWith("/candidatures/entretiens") || pathname.startsWith("/candidatures/nouvelle") 
+  const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/dashboard")
+  const isCandidat = pathname.startsWith("/offres-user") || pathname.startsWith("/candidatures") || pathname.startsWith("/candidatures/entretiens") || pathname.startsWith("/candidatures/nouvelle")
 
   const showHeaderSign = isAuth || isCandidat
   const showDefaultHeader = !isRecruteur && !showHeaderSign
 
+  useEffect(() => {
+    // Dès que le consentement est donné, charge GTM et informe Consent Mode
+    if (consent === true) {
+      loadGTM(GTM_ID)
+      if (window.gtag) {
+        window.gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'analytics_storage': 'granted',
+        })
+      }
+    } else if (consent === false) {
+      // Refus de consentement, bloque les cookies analytics et pub
+      if (window.gtag) {
+        window.gtag('consent', 'update', {
+          'ad_storage': 'denied',
+          'analytics_storage': 'denied',
+        })
+      }
+    }
+  }, [consent])
+
   return (
-      <ClerkProvider
-        localization={frFR}
-        appearance={{
+    <ClerkProvider
+      localization={frFR}
+      appearance={{
+        baseTheme: dark,
+        variables: { colorPrimary: "#8B4513" },
+        signIn: {
           baseTheme: dark,
           variables: { colorPrimary: "#8B4513" },
-          signIn: {
-            baseTheme: dark,
-            variables: { colorPrimary: "#8B4513" },
-          },
-        }}
-      >
+        },
+      }}
+    >
       <html lang="fr" suppressHydrationWarning>
         <head>
-          {/* Place ici uniquement le script GTM base (sans config gtag) */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-MGSWXGTP');
-              `,
-            }}
-          />
+          {/* Pas de GTM ici pour que ce soit chargé uniquement après consentement */}
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          {/* GTM noscript */}
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-MGSWXGTP"
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
 
             {/* HEADER */}
@@ -98,8 +121,26 @@ export default function RootLayout({
             {showDefaultHeader && <Footer />}
 
             {/* Banniere consentement cookies */}
-            <CookieConsent />
-
+            {consent === null && (
+              <CookieConsent
+                location="bottom"
+                buttonText="Accepter"
+                declineButtonText="Refuser"
+                enableDeclineButton
+                cookieName="siteCookieConsent"
+                style={{ background: "#2B373B" }}
+                buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+                declineButtonStyle={{ color: "#fff", backgroundColor: "#c44", fontSize: "13px" }}
+                expires={150}
+                onAccept={() => setConsent(true)}
+                onDecline={() => setConsent(false)}
+              >
+                Ce site utilise des cookies pour améliorer votre expérience.{" "}
+                <a href="/politique-de-cookies" style={{ color: "#FFD700" }}>
+                  En savoir plus
+                </a>
+              </CookieConsent>
+            )}
           </ThemeProvider>
         </body>
       </html>
