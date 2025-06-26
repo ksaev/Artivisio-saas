@@ -55,7 +55,18 @@ export default function RootLayout({
       <html lang="fr" suppressHydrationWarning>
         <title>Artivsio</title>
         <head>
-          <CookieConsent />
+        {/* Balise Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDGG3LBBVJ"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-NDGG3LBBVJ');
+            `,
+          }}
+        />
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
@@ -85,6 +96,8 @@ export default function RootLayout({
             {/* FOOTER */}
             {showDefaultHeader && <Footer />}
             
+            <CookieConsent/>
+
           </ThemeProvider>
         </body>
       </html>
