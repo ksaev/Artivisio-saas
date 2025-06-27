@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void
     dataLayer?: any[]
   }
 }
@@ -41,19 +40,20 @@ export default function CookieConsent() {
       setVisible(true)
     } else if (consent === "granted") {
       loadGTM("GTM-MGSWXGTP")
+      window.dataLayer?.push({ event: "consent_analytics_granted" })
     }
   }, [])
 
   const accept = () => {
     setCookie("cookie_consent", "granted", 365)
     loadGTM("GTM-MGSWXGTP")
-    window.dataLayer?.push({ event: "cookie_consent_granted" })
+    window.dataLayer?.push({ event: "consent_analytics_granted" })
     setVisible(false)
   }
 
   const decline = () => {
     setCookie("cookie_consent", "denied", 365)
-    window.dataLayer?.push({ event: "cookie_consent_denied" })
+    window.dataLayer?.push({ event: "consent_analytics_denied" })
     setVisible(false)
   }
 
