@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from "react"
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void
+  }
+}
+
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
@@ -14,49 +20,25 @@ function setCookie(name: string, value: string, days: number) {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`
 }
 
-function loadGoogleAnalytics() {
-  if (document.getElementById("ga-script")) return
-
-  const script = document.createElement("script")
-  script.id = "ga-script"
-  script.async = true
-  script.src = "https://www.googletagmanager.com/gtag/js?id=G-NDGG3LBBVJ"
-  document.head.appendChild(script)
-
-  script.onload = () => {
-    ;(window as any).dataLayer = (window as any).dataLayer || []
-    ;(window as any).gtag = function (...args: any[]) {
-      ;(window as any).dataLayer.push(args)
-    }
-
-    ;(window as any).gtag("js", new Date())
-    ;(window as any).gtag("config", "G-NDGG3LBBVJ")
-  }
-}
-
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const consent = getCookie("cookie_consent")
     if (!consent) {
-      // Par défaut, on bloque tout jusqu'au consentement
-      ;(window as any).gtag?.("consent", "default", {
+      window.gtag?.("consent", "default", {
         ad_storage: "denied",
         analytics_storage: "denied",
         ad_user_data: "denied",
         ad_personalization: "denied",
       })
       setVisible(true)
-    } else if (consent === "granted") {
-      loadGoogleAnalytics()
     }
   }, [])
 
   const accept = () => {
     setCookie("cookie_consent", "granted", 365)
-    loadGoogleAnalytics()
-    ;(window as any).gtag?.("consent", "update", {
+    window.gtag?.("consent", "update", {
       ad_storage: "granted",
       analytics_storage: "granted",
       ad_user_data: "granted",
@@ -67,7 +49,7 @@ export default function CookieConsent() {
 
   const decline = () => {
     setCookie("cookie_consent", "denied", 365)
-    ;(window as any).gtag?.("consent", "update", {
+    window.gtag?.("consent", "update", {
       ad_storage: "denied",
       analytics_storage: "denied",
       ad_user_data: "denied",
