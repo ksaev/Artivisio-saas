@@ -71,13 +71,13 @@ export default function CookieConsent() {
       <div className="flex gap-2">
         <button
           onClick={decline}
-          className="bg-gray-700 px-3 py-1 rounded text-white"
+          className="bg-red-700 px-3 py-1 rounded text-white"
         >
           Refuser
         </button>
         <button
           onClick={accept}
-          className="bg-yellow-400 px-3 py-1 rounded text-black"
+          className="bg-green-700 px-3 py-1 rounded text-black"
         >
           Accepter
         </button>
