@@ -14,6 +14,7 @@ import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import CookieConsent from "@/components/CookieConsent"
 import AnnouncementBar from "@/components/AnnouncementBar"
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] })
@@ -40,6 +41,7 @@ export default function RootLayout({
             <AnnouncementBar />
             <main>{children}</main>
             <Footer />
+            <Analytics/>
             <CookieConsent />
           </ThemeProvider>
         </body>
