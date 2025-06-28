@@ -53,7 +53,7 @@ export default function CookieConsent() {
     if (document.getElementById("gtm-script")) return
     const script = document.createElement("script")
     script.id = "gtm-script"
-    script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
+    script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-MGSWXGTP"
     script.async = true
     document.head.appendChild(script)
   }
@@ -101,7 +101,7 @@ export default function CookieConsent() {
 
   return (
     <>
-      {(prefs.analytics || prefs.ads) && <GoogleTagManager gtmId={GTM_ID} />}
+      {(prefs.analytics || prefs.ads) && <GoogleTagManager gtmId="GTM-MGSWXGTP" />}
 
       <div
         className="fixed inset-0 bg-black bg-opacity-90 flex flex-col justify-center items-center p-6 z-[9999]"
