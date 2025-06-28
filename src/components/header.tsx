@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle} from "@/components/ui/sheet"
 import { Menu, Moon, Sun, User } from "lucide-react"
 import { useTheme } from "next-themes"
+import AnnouncementBar from "./AnnouncementBar"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -73,7 +74,7 @@ export function Header() {
             <Button asChild>
               <Link href="/sign-up">S'inscrire</Link>
             </Button>
-          </div>
+        </div>
 
           {/* Menu Mobile */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -124,7 +125,9 @@ export function Header() {
               </div>
             </SheetContent>
           </Sheet>
-        </div>
       </div>
+      
+    </div>
+    
   )
 }

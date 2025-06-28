@@ -1,32 +1,82 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet"
-import { Menu, Moon, Sun, Bell } from "lucide-react"
 import { useTheme } from "next-themes"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
+import { Bell, Menu, Moon, Sun } from "lucide-react"
 import { UserButton } from "@clerk/nextjs"
 import { ConfirmSwitchButton } from "./confirmBox"
 
-type NotificationBellProps = {
+type Notification = {
+  id: string
+  label: string
+  link: string
+}
+
+type HeaderSignProps = {
   count: number
 }
 
-export function HeaderSign({ count }: NotificationBellProps) {
+export function HeaderSign({ count }: HeaderSignProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
   const { theme, setTheme } = useTheme()
+  const notificationRef = useRef<HTMLDivElement>(null)
+
+  const notifications: Notification[] = Array.from({ length: count }).map((_, index) => ({
+    id: `${index + 1}`,
+    label: `Notification ${index + 1}`,
+    link: `/notifications/${index + 1}`,
+  }))
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(e.target as Node)
+      ) {
+        setShowNotifications(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   return (
+    <>
+      {/* 🔔 Notification panel (superposé au-dessus de tout) */}
+      {showNotifications && (
+        <div
+          ref={notificationRef}
+          className="fixed top-2 right-4 z-[9999] w-80 max-h-96 overflow-y-auto rounded-xl border bg-white dark:bg-zinc-900 shadow-2xl p-4 animate-slide-down"
+        >
+          <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
+            Notifications
+          </h4>
+          {notifications.length > 0 ? (
+            notifications.map((notif) => (
+              <Link
+                key={notif.id}
+                href={notif.link}
+                className="flex items-start gap-2 px-3 py-2 mb-2 rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              >
+                <span className="text-pink-500 mt-1">📣</span>
+                <span className="text-sm text-zinc-900 dark:text-white">{notif.label}</span>
+              </Link>
+            ))
+          ) : (
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">Aucune notification</p>
+          )}
+        </div>
+      )}
+
+      {/* 🌐 Main Header */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Left: Logo */}
+          {/* Logo */}
           <div className="flex items-center space-x-4 w-full md:w-auto">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="h-15 w-15 overflow-hidden rounded-lg">
@@ -42,15 +92,13 @@ export function HeaderSign({ count }: NotificationBellProps) {
             </Link>
           </div>
 
-          {/* Right: Desktop - Notifications, Theme, User */}
+          {/* Desktop actions */}
           <div className="hidden md:flex items-center space-x-5">
-            {/*Changement de mode*/}
+            <ConfirmSwitchButton />
+
+            {/* 🔔 Notifications */}
             <div className="relative">
-              <ConfirmSwitchButton />
-            </div>
-            {/* Notification */}
-            <div className="relative">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
                 <Bell className="h-6 w-6" />
               </Button>
               {count > 0 && (
@@ -60,7 +108,7 @@ export function HeaderSign({ count }: NotificationBellProps) {
               )}
             </div>
 
-            {/* Theme Toggle */}
+            {/* ☀️/🌙 Toggle thème */}
             <Button
               variant="ghost"
               size="icon"
@@ -72,15 +120,14 @@ export function HeaderSign({ count }: NotificationBellProps) {
               <span className="sr-only">Changer de thème</span>
             </Button>
 
-            {/* User */}
             <UserButton />
           </div>
 
-          {/* Right: Mobile - Notification, Theme, User, Menu */}
+          {/* Mobile actions */}
           <div className="md:hidden mt-2 flex items-center space-x-4">
-            {/* Notification Mobile */}
+            {/* Notifications mobile */}
             <div className="relative">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
                 <Bell className="h-6 w-6" />
               </Button>
               {count > 0 && (
@@ -90,7 +137,7 @@ export function HeaderSign({ count }: NotificationBellProps) {
               )}
             </div>
 
-            {/* Theme Toggle Mobile */}
+            {/* Toggle thème mobile */}
             <Button
               variant="ghost"
               size="icon"
@@ -102,41 +149,36 @@ export function HeaderSign({ count }: NotificationBellProps) {
               <span className="sr-only">Changer de thème</span>
             </Button>
 
-            {/* User Mobile */}
+            {/* Profil utilisateur */}
             <UserButton />
 
-            {/* Menu Mobile */}
-            <div className="flex justify-end">
-              <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Ouvrir le menu</span>
-                  </Button>
-                </SheetTrigger>
-
-                <SheetContent side="right" className="w-80">
-                  <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
-
-                  <div className="flex flex-col space-y-4 mt-8">
-                    <Link href="/candidatures">
-                      <button>Mes candidatures</button>
-                    </Link>
-                    <Link href="/offres">
-                      <button>Mes offres d'emploi</button>
-                    </Link>
-                    <Link href="/candidatures/entretiens">
-                      <button>Mes entretiens</button>
-                    </Link>
-                    <div className="flex flex-col space-y-4 mt-8">
-                      <ConfirmSwitchButton/>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+            {/* Menu mobile */}
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Ouvrir le menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
+                <div className="flex flex-col space-y-4 mt-8">
+                  <Link href="/candidatures">
+                    <button>Mes candidatures</button>
+                  </Link>
+                  <Link href="/offres">
+                    <button>Mes offres d'emploi</button>
+                  </Link>
+                  <Link href="/candidatures/entretiens">
+                    <button>Mes entretiens</button>
+                  </Link>
+                  <ConfirmSwitchButton />
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
+    </>
   )
 }

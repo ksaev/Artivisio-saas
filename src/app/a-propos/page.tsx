@@ -9,9 +9,9 @@ import React from "react"
 
 
 export const metadata: Metadata = {
-  title: "À propos - CareerBoost | Notre Mission et Nos Valeurs",
+  title: "À propos - ArtiVisio | Notre Mission et Nos Valeurs",
   description:
-    "Découvrez l'histoire de CareerBoost, notre mission d'accompagner les professionnels africains et nos valeurs fondamentales.",
+    "Découvrez l'histoire de ArtiVisio, notre mission d'accompagner les professionnels africains et nos valeurs fondamentales.",
 }
 
 export default function AboutPage() {
@@ -82,7 +82,7 @@ export default function AboutPage() {
               Notre mission : <span className="text-primary">Révéler votre potentiel</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Depuis 2020, CareerBoost accompagne les professionnels d'Afrique de l'Ouest dans leur développement de
+              Depuis 2020, ArtiVisio accompagne les professionnels d'Afrique de l'Ouest dans leur développement de
               carrière et les connecte aux meilleures opportunités d'emploi.
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Une vision née de l'expérience</h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  CareerBoost est né de la conviction que chaque professionnel mérite un accompagnement de qualité pour
+                  ArtiVisio est né de la conviction que chaque professionnel mérite un accompagnement de qualité pour
                   développer sa carrière. Fondée par des experts RH ayant évolué dans les plus grandes entreprises
                   d'Afrique de l'Ouest, notre plateforme répond aux défis spécifiques du marché de l'emploi africain.
                 </p>

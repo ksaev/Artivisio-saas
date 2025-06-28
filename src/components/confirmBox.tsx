@@ -26,7 +26,7 @@ export function ConfirmSwitchButton() {
   const buttonLabel = isDashboard ? "Espace recruteur" : "Espace candidat"
 
   const handleConfirm = () => {
-    setIsLoading(true)
+    setIsLoading(false)
     setTimeout(() => {
       router.push(targetPath)
     }, 500) // délai léger pour que le spinner soit visible (optionnel)
@@ -61,7 +61,6 @@ export function ConfirmSwitchButton() {
             </Button>
           </AlertDialogAction>
               </AlertDialogFooter>
-
         </>
         )}
       </AlertDialogContent>
