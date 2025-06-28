@@ -1,34 +1,23 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
 declare global {
   interface Window {
-    dataLayer?: any[]
+    gtag?: (...args: any[]) => void
   }
 }
 
-function setCookie(name: string, value: string, days: number) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString()
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`
-}
-
 function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
   return match ? decodeURIComponent(match[2]) : null
 }
 
-function loadGTM(gtmId: string) {
-  if (document.getElementById("gtm-script")) return
-
-  const script = document.createElement("script")
-  script.id = "gtm-script"
-  script.async = true
-  script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
-  document.head.appendChild(script)
-
-  window.dataLayer = window.dataLayer || []
-  window.dataLayer.push({ event: "gtm.js", "gtm.start": new Date().getTime() })
+function setCookie(name: string, value: string, days: number) {
+  if (typeof document === "undefined") return
+  const expires = new Date(Date.now() + days * 864e5).toUTCString()
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`
 }
 
 export default function CookieConsent() {
@@ -37,23 +26,35 @@ export default function CookieConsent() {
   useEffect(() => {
     const consent = getCookie("cookie_consent")
     if (!consent) {
+      window.gtag?.("consent", "default", {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+      })
       setVisible(true)
-    } else if (consent === "granted") {
-      loadGTM("GTM-MGSWXGTP")
-      window.dataLayer?.push({ event: "consent_analytics_granted" })
     }
   }, [])
 
   const accept = () => {
     setCookie("cookie_consent", "granted", 365)
-    loadGTM("GTM-MGSWXGTP")
-    window.dataLayer?.push({ event: "consent_analytics_granted" })
+    window.gtag?.("consent", "update", {
+      ad_storage: "granted",
+      analytics_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+    })
     setVisible(false)
   }
 
   const decline = () => {
     setCookie("cookie_consent", "denied", 365)
-    window.dataLayer?.push({ event: "consent_analytics_denied" })
+    window.gtag?.("consent", "update", {
+      ad_storage: "denied",
+      analytics_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+    })
     setVisible(false)
   }
 
@@ -68,10 +69,16 @@ export default function CookieConsent() {
         </a>
       </p>
       <div className="flex gap-2">
-        <button onClick={decline} className="bg-red-600 px-3 py-1 rounded">
+        <button
+          onClick={decline}
+          className="bg-red-700 px-3 py-1 rounded text-white"
+        >
           Refuser
         </button>
-        <button onClick={accept} className="bg-green-500 px-3 py-1 rounded text-black">
+        <button
+          onClick={accept}
+          className="bg-green-700 px-3 py-1 rounded text-black"
+        >
           Accepter
         </button>
       </div>
