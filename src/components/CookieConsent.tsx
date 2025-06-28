@@ -23,7 +23,6 @@ function getCookie(name: string): string | null {
 }
 
 export default function CookieConsent() {
-  const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID!
   const [visible, setVisible] = useState(false)
   const [prefs, setPrefs] = useState<ConsentPrefs>({
     analytics: false,

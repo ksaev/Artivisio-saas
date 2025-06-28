@@ -42,6 +42,11 @@ Offre des ressources, des offres d’emploi/missions, un espace utilisateur avec
 | Authentification | Clerk (gestion complète utilisateurs et sessions) |
 | Paiement         | Stripe                            |
 | SEO              | Dynamic Meta Tags, Sitemap, Open Graph |
+| Analytics        | Google Analytics (via `gtag.js` ou intégration `next/script`), vercel Analytics|
+| Notifications    | OneSignal
+| Déploiement      | Vercel                                                                |
+
+
 
 ---
 
