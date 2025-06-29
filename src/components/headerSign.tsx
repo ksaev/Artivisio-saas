@@ -7,7 +7,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { Bell, Menu, Moon, Sun } from "lucide-react"
-import { UserButton } from "@clerk/nextjs"
+import { UserButton, useUser } from "@clerk/nextjs"
 import { ConfirmSwitchButton } from "./confirmBox"
 
 type Notification = {
@@ -23,8 +23,39 @@ type HeaderSignProps = {
 export function HeaderSign({ count }: HeaderSignProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
+  const [notificationSent, setNotificationSent] = useState(false) // éviter envoi multiple
   const { theme, setTheme } = useTheme()
   const notificationRef = useRef<HTMLDivElement>(null)
+
+  const { user } = useUser()
+
+  const sendNotification = async () => {
+    if (!user) return
+    try {
+      const res = await fetch("/api/send-notification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          title: "Bonjour 👋",
+          message: "Tu as reçu une nouvelle offre personnalisée !",
+        }),
+      })
+      if (!res.ok) throw new Error("Erreur lors de l'envoi de la notification")
+      const data = await res.json()
+      alert("Notification envoyée automatiquement 🚀")
+    } catch (error) {
+      console.error("Erreur notification :", error)
+    }
+  }
+
+  // Envoi automatique une fois après connexion
+  useEffect(() => {
+    if (user && !notificationSent) {
+      sendNotification()
+      setNotificationSent(true)
+    }
+  }, [user, notificationSent])
 
   const notifications: Notification[] = Array.from({ length: count }).map((_, index) => ({
     id: `${index + 1}`,

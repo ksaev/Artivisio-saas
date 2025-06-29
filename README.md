@@ -42,15 +42,11 @@ Offre des ressources, des offres d’emploi/missions, un espace utilisateur avec
 | Authentification | Clerk (gestion complète utilisateurs et sessions) |
 | Paiement         | Stripe                            |
 | SEO              | Dynamic Meta Tags, Sitemap, Open Graph |
-| Analytics        | Google Analytics (via `gtag.js` ou intégration `next/script`), vercel Analytics|
+| Analytics        | GTAGMANAGER, Google Analytics (via `gtag.js` ou intégration `next/script`), vercel Analytics|
 | Notifications    | OneSignal
 | Déploiement      | Vercel                                                                |
 
 
-
----
-
-Parfait ! Voici un exemple de **section "Fonctionnalités à venir"** (ou "Fonctionnalités en cours de développement") que tu peux ajouter à ton `README.md` pour valoriser ta roadmap et rassurer les contributeurs ou utilisateurs potentiels que ton SaaS est en pleine évolution.
 
 ---
 
