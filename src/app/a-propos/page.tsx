@@ -82,7 +82,7 @@ export default function AboutPage() {
               Notre mission : <span className="text-primary">Révéler votre potentiel</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Depuis 2020, ArtiVisio accompagne les professionnels d'Afrique de l'Ouest dans leur développement de
+              Depuis 2023, ArtiVisio accompagne les professionnels d'Afrique de l'Ouest dans leur développement de
               carrière et les connecte aux meilleures opportunités d'emploi.
             </p>
           </div>

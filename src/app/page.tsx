@@ -81,8 +81,7 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-8 pt-6 items-center text-center justify-center">
                 {[
                   { value: "500+", label: "Leaders accompagnés" },
-                  { value: "98%", label: "Taux de réussite" },
-                  { value: "5+", label: "Pays couverts" },
+                  { value: "95%", label: "Taux de réussite" },
                 ].map((item, idx) => (
                   <div key={idx} className="text-center min-w-[100px]">
                     <div className="text-2xl font-bold text-white">{item.value}</div>

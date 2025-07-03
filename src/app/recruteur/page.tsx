@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link"
 import {
   Dialog,
   DialogContent,
@@ -344,10 +345,14 @@ export default function RecruteurPage() {
             <TabsContent value="offres" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Mes Offres d'Emploi</h2>
-                <Button>
+                <Link
+                  href="/add-offres"
+                >
+                  <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                  Nouvelle offre
-                </Button>
+                    Nouvelle offre
+                  </Button>
+                </Link>
               </div>
 
               <div className="grid gap-6">
@@ -375,9 +380,10 @@ export default function RecruteurPage() {
                                   <MapPin className="h-4 w-4" />
                                   {offre.localisation}
                                 </div>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground ">
                                   <Calendar className="h-4 w-4" />
                                   Publiée le {new Date(offre.datePublication).toLocaleDateString("fr-FR")}
+                                  <span className="text-xl text-primary opacity-100 ">--- Date limite : {new Date(offre.dateLimite).toLocaleDateString("fr-FR")}</span>
                                 </div>
                               </div>
 

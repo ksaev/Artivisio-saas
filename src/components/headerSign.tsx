@@ -10,6 +10,12 @@ import { Bell, Menu, Moon, Sun } from "lucide-react"
 import { UserButton, useUser } from "@clerk/nextjs"
 import { ConfirmSwitchButton } from "./confirmBox"
 
+declare global {
+  interface Window {
+    OneSignal: any
+  }
+}
+
 type Notification = {
   id: string
   label: string
@@ -23,12 +29,12 @@ type HeaderSignProps = {
 export function HeaderSign({ count }: HeaderSignProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
-  const [notificationSent, setNotificationSent] = useState(false) // éviter envoi multiple
-  const { theme, setTheme } = useTheme()
+  const [notificationSent, setNotificationSent] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
-
+  const { theme, setTheme } = useTheme()
   const { user } = useUser()
 
+  // 🔔 Envoi push
   const sendNotification = async () => {
     if (!user) return
     try {
@@ -49,7 +55,44 @@ export function HeaderSign({ count }: HeaderSignProps) {
     }
   }
 
-  // Envoi automatique une fois après connexion
+  // 🔌 Init OneSignal & liaison userId
+  useEffect(() => {
+    if (!user || typeof window === "undefined") return
+
+    window.OneSignal = window.OneSignal || []
+
+    window.OneSignal.push(async function () {
+      await window.OneSignal.init({
+        appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID!,
+        notifyButton: { enable: true },
+        serviceWorkerPath: "/OneSignalSDKWorker.js",
+        serviceWorkerUpdaterPath: "/OneSignalSDKUpdaterWorker.js",
+        allowLocalhostAsSecureOrigin: true,
+      })
+
+      const isSupported = await window.OneSignal.isPushNotificationsSupported()
+      if (!isSupported) {
+        console.log("🔕 Notifications non supportées")
+        return
+      }
+
+      const isEnabled = await window.OneSignal.isPushNotificationsEnabled()
+      if (!isEnabled) {
+        console.log("🔔 Demande permission notification")
+        await window.OneSignal.registerForPushNotifications()
+      }
+
+      // 🔗 Liaison avec Clerk
+      if (user.id) {
+        console.log("🔐 Liaison user ID → OneSignal:", user.id)
+        await window.OneSignal.setExternalUserId(user.id)
+        const playerId = await window.OneSignal.getUserId()
+        console.log("🆔 playerId:", playerId)
+      }
+    })
+  }, [user])
+
+  // Envoi automatique après liaison
   useEffect(() => {
     if (user && !notificationSent) {
       sendNotification()
@@ -57,18 +100,15 @@ export function HeaderSign({ count }: HeaderSignProps) {
     }
   }, [user, notificationSent])
 
-  const notifications: Notification[] = Array.from({ length: count }).map((_, index) => ({
-    id: `${index + 1}`,
-    label: `Notification ${index + 1}`,
-    link: `/notifications/${index + 1}`,
+  const notifications: Notification[] = Array.from({ length: count }).map((_, i) => ({
+    id: `${i + 1}`,
+    label: `Notification ${i + 1}`,
+    link: `/notifications/${i + 1}`,
   }))
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(e.target as Node)
-      ) {
+      if (notificationRef.current && !notificationRef.current.contains(e.target as Node)) {
         setShowNotifications(false)
       }
     }
@@ -78,7 +118,6 @@ export function HeaderSign({ count }: HeaderSignProps) {
 
   return (
     <>
-      {/* 🔔 Notification panel (superposé au-dessus de tout) */}
       {showNotifications && (
         <div
           ref={notificationRef}
@@ -104,30 +143,20 @@ export function HeaderSign({ count }: HeaderSignProps) {
         </div>
       )}
 
-      {/* 🌐 Main Header */}
+      {/* 🌐 Header principal */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
           <div className="flex items-center space-x-4 w-full md:w-auto">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="h-15 w-15 overflow-hidden rounded-lg">
-                <Image
-                  src="/logo_artivisio.png"
-                  alt="Logo ArtiVisio"
-                  width={50}
-                  height={50}
-                  className="object-cover"
-                />
+                <Image src="/logo_artivisio.png" alt="Logo ArtiVisio" width={50} height={50} />
               </div>
               <span className="text-lg font-bold text-foreground">ArtiVisio</span>
             </Link>
           </div>
 
-          {/* Desktop actions */}
           <div className="hidden md:flex items-center space-x-5">
             <ConfirmSwitchButton />
-
-            {/* 🔔 Notifications */}
             <div className="relative">
               <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
                 <Bell className="h-6 w-6" />
@@ -138,8 +167,6 @@ export function HeaderSign({ count }: HeaderSignProps) {
                 </span>
               )}
             </div>
-
-            {/* ☀️/🌙 Toggle thème */}
             <Button
               variant="ghost"
               size="icon"
@@ -150,13 +177,11 @@ export function HeaderSign({ count }: HeaderSignProps) {
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Changer de thème</span>
             </Button>
-
             <UserButton />
           </div>
 
-          {/* Mobile actions */}
+          {/* Mobile */}
           <div className="md:hidden mt-2 flex items-center space-x-4">
-            {/* Notifications mobile */}
             <div className="relative">
               <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
                 <Bell className="h-6 w-6" />
@@ -167,8 +192,6 @@ export function HeaderSign({ count }: HeaderSignProps) {
                 </span>
               )}
             </div>
-
-            {/* Toggle thème mobile */}
             <Button
               variant="ghost"
               size="icon"
@@ -179,11 +202,7 @@ export function HeaderSign({ count }: HeaderSignProps) {
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Changer de thème</span>
             </Button>
-
-            {/* Profil utilisateur */}
             <UserButton />
-
-            {/* Menu mobile */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -194,15 +213,9 @@ export function HeaderSign({ count }: HeaderSignProps) {
               <SheetContent side="right" className="w-80">
                 <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
                 <div className="flex flex-col space-y-4 mt-8">
-                  <Link href="/candidatures">
-                    <button>Mes candidatures</button>
-                  </Link>
-                  <Link href="/offres">
-                    <button>Mes offres d'emploi</button>
-                  </Link>
-                  <Link href="/candidatures/entretiens">
-                    <button>Mes entretiens</button>
-                  </Link>
+                  <Link href="/candidatures"><button>Mes candidatures</button></Link>
+                  <Link href="/offres"><button>Mes offres d'emploi</button></Link>
+                  <Link href="/candidatures/entretiens"><button>Mes entretiens</button></Link>
                   <ConfirmSwitchButton />
                 </div>
               </SheetContent>

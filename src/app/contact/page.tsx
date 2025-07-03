@@ -55,13 +55,13 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: "Téléphone",
-      details: "+225 01 02 03 04 05",
+      details: "+225 07 08 97 67 37",
       description: "Lun-Ven 9h-18h",
     },
     {
       icon: MapPin,
       title: "Bureaux",
-      details: "Abidjan & Ouagadougou",
+      details: "Abidjan",
       description: "Sur rendez-vous",
     },
     {

@@ -97,4 +97,10 @@
   background-repeat: no-repeat;
 }
 
+/* Cacher le drapeau dans react-phone-number-input */
+.phone-input .PhoneInputCountry {
+  display: none !important;
+}
+
+
 

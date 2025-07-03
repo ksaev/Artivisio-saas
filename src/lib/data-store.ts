@@ -39,6 +39,7 @@ export interface Offre {
   salaire?: string
   typeContrat: string
   datePublication: string
+  dateLimite: string 
   recruteurId: string
   statut: "active" | "fermee" | "pourvue"
 }
@@ -62,6 +63,7 @@ export const offres: Offre[] = [
     salaire: "Négociable + Equity",
     typeContrat: "CDI",
     datePublication: "2024-01-10",
+    dateLimite: "2024-02-10", // Ajout de la date limite
     recruteurId: "rec_1",
     statut: "active",
   },
@@ -74,6 +76,7 @@ export const offres: Offre[] = [
     salaire: "Package premium",
     typeContrat: "CDI",
     datePublication: "2024-01-08",
+    dateLimite: "2024-02-08", 
     recruteurId: "rec_2",
     statut: "active",
   },
@@ -86,6 +89,7 @@ export const offres: Offre[] = [
     salaire: "Très attractif",
     typeContrat: "Consulting",
     datePublication: "2024-01-05",
+    dateLimite: "2024-02-05", // Ajout de la date limite
     recruteurId: "rec_3",
     statut: "active",
   },

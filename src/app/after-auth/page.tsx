@@ -13,9 +13,9 @@ export default function AfterAuth() {
     const role = user?.publicMetadata?.role;
 
     if (role === "recruteur") {
-      router.push("/dashboard/recruteur");
+      router.push("/recruteur");
     } else if (role === "candidat") {
-      router.push("/dashboard/candidat");
+      router.push("/candidat");
     } else {
       router.push("/onboarding");
     }

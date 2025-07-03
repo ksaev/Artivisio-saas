@@ -35,8 +35,7 @@ export default function CoachingPage() {
         "Cartographie des opportunités",
         "Plan d'action personnalisé",
       ],
-      duration: "4-6 séances",
-      price: "150k FCFA",
+      duration: "4+ séances",
     },
     {
       icon: FileText,
@@ -48,8 +47,7 @@ export default function CoachingPage() {
         "Lettre de motivation type",
         "Portfolio professionnel",
       ],
-      duration: "2-3 séances",
-      price: "75k FCFA",
+      duration: "2+ séances",
     },
     {
       icon: MessageSquare,
@@ -61,16 +59,14 @@ export default function CoachingPage() {
         "Gestion du stress",
         "Négociation salariale",
       ],
-      duration: "3-4 séances",
-      price: "100k FCFA",
+      duration: "3+ séances",
     },
     {
       icon: TrendingUp,
       title: "Développement Leadership",
       description: "Développez vos compétences de leader et accélérez votre évolution professionnelle",
       features: ["Assessment 360°", "Plan de développement", "Coaching en situation", "Suivi personnalisé"],
-      duration: "6-8 séances",
-      price: "200k FCFA",
+      duration: "6+ séances",
     },
     {
       icon: Users,
@@ -82,16 +78,14 @@ export default function CoachingPage() {
         "Développement réseau",
         "Accompagnement changement",
       ],
-      duration: "8-10 séances",
-      price: "250k FCFA",
+      duration: "8+ séances",
     },
     {
       icon: Briefcase,
       title: "Lancement Freelance",
       description: "Lancez votre activité de freelance avec les bonnes bases et stratégies",
       features: ["Business plan freelance", "Stratégie tarifaire", "Prospection clients", "Outils et processus"],
-      duration: "5-6 séances",
-      price: "175k FCFA",
+      duration: "5+ séances",
     },
   ]
 
@@ -268,7 +262,7 @@ export default function CoachingPage() {
                       <Clock className="h-4 w-4" />
                       {service.duration}
                     </div>
-                    <div className="text-2xl font-bold text-primary">{service.price}</div>
+                    {/*<div className="text-2xl font-bold text-primary">{service.price}</div>*/}
                     <Button className="w-full">Choisir ce programme</Button>
                   </div>
                 </CardContent>
@@ -386,7 +380,7 @@ export default function CoachingPage() {
               variant="outline"
               className="text-lg px-8 text-secondary-foreground border-primary-foreground/30 hover:bg-primary-foreground/10"
             >
-              <Link href="/auth/login">Créer mon compte</Link>
+              <Link href="/sign-up">Créer mon compte</Link>
             </Button>
           </div>
         </div>
