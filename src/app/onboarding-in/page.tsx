@@ -22,15 +22,15 @@ export default function Onboarding() {
         <h2 className="text-3xl font-semibold mb-4">Choisissez votre rôle</h2>
         <button
           className="bg-red-600 text-white px-5 py-3 text-xl rounded m-2"
-          onClick={() => handleSelectRole("register/recruteur")}
+          onClick={() => handleSelectRole("recruteur")}
         >
-          Je suis un recruteur
+          Espace recruteur
         </button>
         <button
           className="bg-green-600 text-white px-5 py-3 text-xl rounded m-2"
-          onClick={() => handleSelectRole("register/candidat")}
+          onClick={() => handleSelectRole("dashboard")}
         >
-          Je suis un candidat
+          Espace candidat
         </button>
       </div>
     </div>
