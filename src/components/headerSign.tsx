@@ -1,42 +1,47 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
-import { Bell, Menu, Moon, Sun } from "lucide-react"
-import { UserButton, useUser } from "@clerk/nextjs"
-import { ConfirmSwitchButton } from "./confirmBox"
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Bell, Menu, Moon, Sun } from "lucide-react";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { ConfirmSwitchButton } from "./confirmBox";
 
 declare global {
   interface Window {
-    OneSignal: any
+    OneSignal: any;
   }
 }
 
 type Notification = {
-  id: string
-  label: string
-  link: string
-}
+  id: string;
+  label: string;
+  link: string;
+};
 
 type HeaderSignProps = {
-  count: number
-}
+  count: number;
+};
 
 export function HeaderSign({ count }: HeaderSignProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [notificationSent, setNotificationSent] = useState(false)
-  const notificationRef = useRef<HTMLDivElement>(null)
-  const { theme, setTheme } = useTheme()
-  const { user } = useUser()
+  const [isOpen, setIsOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationSent, setNotificationSent] = useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const { theme, setTheme } = useTheme();
+  const { user } = useUser();
 
   // 🔔 Envoi push
   const sendNotification = async () => {
-    if (!user) return
+    if (!user) return;
     try {
       const res = await fetch("/api/send-notification", {
         method: "POST",
@@ -46,20 +51,20 @@ export function HeaderSign({ count }: HeaderSignProps) {
           title: "Bonjour 👋",
           message: "Tu as reçu une nouvelle offre personnalisée !",
         }),
-      })
-      if (!res.ok) throw new Error("Erreur lors de l'envoi de la notification")
-      const data = await res.json()
-      alert("Notification envoyée automatiquement 🚀")
+      });
+      if (!res.ok) throw new Error("Erreur lors de l'envoi de la notification");
+      const data = await res.json();
+      alert("Notification envoyée automatiquement 🚀");
     } catch (error) {
-      console.error("Erreur notification :", error)
+      console.error("Erreur notification :", error);
     }
-  }
+  };
 
   // 🔌 Init OneSignal & liaison userId
   useEffect(() => {
-    if (!user || typeof window === "undefined") return
+    if (!user || typeof window === "undefined") return;
 
-    window.OneSignal = window.OneSignal || []
+    window.OneSignal = window.OneSignal || [];
 
     window.OneSignal.push(async function () {
       await window.OneSignal.init({
@@ -68,53 +73,58 @@ export function HeaderSign({ count }: HeaderSignProps) {
         serviceWorkerPath: "/OneSignalSDKWorker.js",
         serviceWorkerUpdaterPath: "/OneSignalSDKUpdaterWorker.js",
         allowLocalhostAsSecureOrigin: true,
-      })
+      });
 
-      const isSupported = await window.OneSignal.isPushNotificationsSupported()
+      const isSupported = await window.OneSignal.isPushNotificationsSupported();
       if (!isSupported) {
-        console.log("🔕 Notifications non supportées")
-        return
+        console.log("🔕 Notifications non supportées");
+        return;
       }
 
-      const isEnabled = await window.OneSignal.isPushNotificationsEnabled()
+      const isEnabled = await window.OneSignal.isPushNotificationsEnabled();
       if (!isEnabled) {
-        console.log("🔔 Demande permission notification")
-        await window.OneSignal.registerForPushNotifications()
+        console.log("🔔 Demande permission notification");
+        await window.OneSignal.registerForPushNotifications();
       }
 
       // 🔗 Liaison avec Clerk
       if (user.id) {
-        console.log("🔐 Liaison user ID → OneSignal:", user.id)
-        await window.OneSignal.setExternalUserId(user.id)
-        const playerId = await window.OneSignal.getUserId()
-        console.log("🆔 playerId:", playerId)
+        console.log("🔐 Liaison user ID → OneSignal:", user.id);
+        await window.OneSignal.setExternalUserId(user.id);
+        const playerId = await window.OneSignal.getUserId();
+        console.log("🆔 playerId:", playerId);
       }
-    })
-  }, [user])
+    });
+  }, [user]);
 
   // Envoi automatique après liaison
   useEffect(() => {
     if (user && !notificationSent) {
-      sendNotification()
-      setNotificationSent(true)
+      sendNotification();
+      setNotificationSent(true);
     }
-  }, [user, notificationSent])
+  }, [user, notificationSent]);
 
-  const notifications: Notification[] = Array.from({ length: count }).map((_, i) => ({
-    id: `${i + 1}`,
-    label: `Notification ${i + 1}`,
-    link: `/notifications/${i + 1}`,
-  }))
+  const notifications: Notification[] = Array.from({ length: count }).map(
+    (_, i) => ({
+      id: `${i + 1}`,
+      label: `Notification ${i + 1}`,
+      link: `/notifications/${i + 1}`,
+    })
+  );
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (notificationRef.current && !notificationRef.current.contains(e.target as Node)) {
-        setShowNotifications(false)
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(e.target as Node)
+      ) {
+        setShowNotifications(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -134,11 +144,15 @@ export function HeaderSign({ count }: HeaderSignProps) {
                 className="flex items-start gap-2 px-3 py-2 mb-2 rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               >
                 <span className="text-pink-500 mt-1">📣</span>
-                <span className="text-sm text-zinc-900 dark:text-white">{notif.label}</span>
+                <span className="text-sm text-zinc-900 dark:text-white">
+                  {notif.label}
+                </span>
               </Link>
             ))
           ) : (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">Aucune notification</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              Aucune notification
+            </p>
           )}
         </div>
       )}
@@ -149,16 +163,27 @@ export function HeaderSign({ count }: HeaderSignProps) {
           <div className="flex items-center space-x-4 w-full md:w-auto">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="h-15 w-15 overflow-hidden rounded-lg">
-                <Image src="/logo_artivisio.png" alt="Logo ArtiVisio" width={50} height={50} />
+                <Image
+                  src="/logo_artivisio.png"
+                  alt="Logo ArtiVisio"
+                  width={50}
+                  height={50}
+                />
               </div>
-              <span className="text-lg font-bold text-foreground">ArtiVisio</span>
+              <span className="text-lg font-bold text-foreground">
+                ArtiVisio
+              </span>
             </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-5">
             <ConfirmSwitchButton />
             <div className="relative">
-              <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
                 <Bell className="h-6 w-6" />
               </Button>
               {count > 0 && (
@@ -183,7 +208,11 @@ export function HeaderSign({ count }: HeaderSignProps) {
           {/* Mobile */}
           <div className="md:hidden mt-2 flex items-center space-x-4">
             <div className="relative">
-              <Button variant="ghost" size="icon" onClick={() => setShowNotifications(!showNotifications)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
                 <Bell className="h-6 w-6" />
               </Button>
               {count > 0 && (
@@ -213,9 +242,15 @@ export function HeaderSign({ count }: HeaderSignProps) {
               <SheetContent side="right" className="w-80">
                 <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
                 <div className="flex flex-col space-y-4 mt-8">
-                  <Link href="/candidatures"><button>Mes candidatures</button></Link>
-                  <Link href="/offres"><button>Mes offres d'emploi</button></Link>
-                  <Link href="/candidatures/entretiens"><button>Mes entretiens</button></Link>
+                  <Link href="/candidatures">
+                    <button>Mes candidatures</button>
+                  </Link>
+                  <Link href="/offres-user">
+                    <button>Mes offres d'emploi</button>
+                  </Link>
+                  <Link href="/candidatures/entretiens">
+                    <button>Mes entretiens</button>
+                  </Link>
                   <ConfirmSwitchButton />
                 </div>
               </SheetContent>
@@ -224,5 +259,5 @@ export function HeaderSign({ count }: HeaderSignProps) {
         </div>
       </div>
     </>
-  )
+  );
 }

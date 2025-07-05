@@ -507,7 +507,7 @@ export default function DashboardPage() {
             {/* Mes Offres */}
             <TabsContent value="jobs" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-xl font-bold text-foreground sm:text-2xl">
                   Mes Offres Sauvegardées
                 </h2>
                 <Button asChild>

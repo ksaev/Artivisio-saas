@@ -1,13 +1,21 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Plus, Save, Trash2, ArrowUp, ArrowDown, Check } from "lucide-react"
-import Link from "next/link"
-import { FloatingCard } from "@/components/3d-animations"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowLeft,
+  Plus,
+  Save,
+  Trash2,
+  ArrowUp,
+  ArrowDown,
+  Check,
+} from "lucide-react";
+import Link from "next/link";
+import { FloatingCard } from "@/components/3d-animations";
 import {
   Dialog,
   DialogContent,
@@ -16,18 +24,18 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Types pour les statuts
 interface Statut {
-  id: string
-  nom: string
-  couleur: string
-  description: string
-  ordre: number
-  type: "system" | "custom"
+  id: string;
+  nom: string;
+  couleur: string;
+  description: string;
+  ordre: number;
+  type: "system" | "custom";
 }
 
 // Statuts par défaut du système
@@ -88,19 +96,21 @@ const defaultStatuts: Statut[] = [
     ordre: 7,
     type: "system",
   },
-]
+];
 
 export default function StatutsPage() {
-  const [statuts, setStatuts] = useState<Statut[]>([...defaultStatuts])
-  const [customStatuts, setCustomStatuts] = useState<Statut[]>([])
-  const [editingStatut, setEditingStatut] = useState<Statut | null>(null)
-  const [newStatut, setNewStatut] = useState<Omit<Statut, "id" | "ordre" | "type">>({
+  const [statuts, setStatuts] = useState<Statut[]>([...defaultStatuts]);
+  const [customStatuts, setCustomStatuts] = useState<Statut[]>([]);
+  const [editingStatut, setEditingStatut] = useState<Statut | null>(null);
+  const [newStatut, setNewStatut] = useState<
+    Omit<Statut, "id" | "ordre" | "type">
+  >({
     nom: "",
     couleur: "#6366F1", // Indigo par défaut
     description: "",
-  })
-  const [showDialog, setShowDialog] = useState(false)
-  const [saveSuccess, setSaveSuccess] = useState(false)
+  });
+  const [showDialog, setShowDialog] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Simuler le chargement des statuts personnalisés depuis une API
   useEffect(() => {
@@ -122,87 +132,102 @@ export default function StatutsPage() {
         ordre: 9,
         type: "custom",
       },
-    ]
+    ];
 
-    setCustomStatuts(savedCustomStatuts)
-    setStatuts([...defaultStatuts, ...savedCustomStatuts])
-  }, [])
+    setCustomStatuts(savedCustomStatuts);
+    setStatuts([...defaultStatuts, ...savedCustomStatuts]);
+  }, []);
 
   const handleAddStatut = () => {
-    if (newStatut.nom.trim() === "") return
+    if (newStatut.nom.trim() === "") return;
 
-    const newId = `custom_${Date.now()}`
+    const newId = `custom_${Date.now()}`;
     const statutToAdd: Statut = {
       ...newStatut,
       id: newId,
       ordre: statuts.length + 1,
       type: "custom",
-    }
+    };
 
-    setCustomStatuts([...customStatuts, statutToAdd])
-    setStatuts([...statuts, statutToAdd])
+    setCustomStatuts([...customStatuts, statutToAdd]);
+    setStatuts([...statuts, statutToAdd]);
     setNewStatut({
       nom: "",
       couleur: "#6366F1",
       description: "",
-    })
-    setShowDialog(false)
-  }
+    });
+    setShowDialog(false);
+  };
 
   const handleUpdateStatut = () => {
-    if (!editingStatut || editingStatut.nom.trim() === "") return
+    if (!editingStatut || editingStatut.nom.trim() === "") return;
 
-    const updatedStatuts = statuts.map((s) => (s.id === editingStatut.id ? editingStatut : s))
-    const updatedCustomStatuts = customStatuts.map((s) => (s.id === editingStatut.id ? editingStatut : s))
+    const updatedStatuts = statuts.map((s) =>
+      s.id === editingStatut.id ? editingStatut : s
+    );
+    const updatedCustomStatuts = customStatuts.map((s) =>
+      s.id === editingStatut.id ? editingStatut : s
+    );
 
-    setStatuts(updatedStatuts)
-    setCustomStatuts(updatedCustomStatuts)
-    setEditingStatut(null)
-    setShowDialog(false)
-  }
+    setStatuts(updatedStatuts);
+    setCustomStatuts(updatedCustomStatuts);
+    setEditingStatut(null);
+    setShowDialog(false);
+  };
 
   const handleDeleteStatut = (id: string) => {
-    const updatedStatuts = statuts.filter((s) => s.id !== id)
-    const updatedCustomStatuts = customStatuts.filter((s) => s.id !== id)
+    const updatedStatuts = statuts.filter((s) => s.id !== id);
+    const updatedCustomStatuts = customStatuts.filter((s) => s.id !== id);
 
     // Réorganiser les ordres
-    const reorderedStatuts = updatedStatuts.map((s, index) => ({ ...s, ordre: index + 1 }))
+    const reorderedStatuts = updatedStatuts.map((s, index) => ({
+      ...s,
+      ordre: index + 1,
+    }));
 
-    setStatuts(reorderedStatuts)
-    setCustomStatuts(updatedCustomStatuts)
-  }
+    setStatuts(reorderedStatuts);
+    setCustomStatuts(updatedCustomStatuts);
+  };
 
   const moveStatut = (id: string, direction: "up" | "down") => {
-    const index = statuts.findIndex((s) => s.id === id)
-    if ((direction === "up" && index === 0) || (direction === "down" && index === statuts.length - 1)) {
-      return
+    const index = statuts.findIndex((s) => s.id === id);
+    if (
+      (direction === "up" && index === 0) ||
+      (direction === "down" && index === statuts.length - 1)
+    ) {
+      return;
     }
 
-    const newIndex = direction === "up" ? index - 1 : index + 1
-    const newStatuts = [...statuts]
-    const temp = newStatuts[index]
-    newStatuts[index] = newStatuts[newIndex]
-    newStatuts[newIndex] = temp
+    const newIndex = direction === "up" ? index - 1 : index + 1;
+    const newStatuts = [...statuts];
+    const temp = newStatuts[index];
+    newStatuts[index] = newStatuts[newIndex];
+    newStatuts[newIndex] = temp;
 
     // Mettre à jour les ordres
-    const reorderedStatuts = newStatuts.map((s, idx) => ({ ...s, ordre: idx + 1 }))
-    setStatuts(reorderedStatuts)
+    const reorderedStatuts = newStatuts.map((s, idx) => ({
+      ...s,
+      ordre: idx + 1,
+    }));
+    setStatuts(reorderedStatuts);
 
     // Mettre à jour les statuts personnalisés si nécessaire
     if (temp.type === "custom" || newStatuts[index].type === "custom") {
-      const updatedCustomStatuts = customStatuts.map((s) => reorderedStatuts.find((rs) => rs.id === s.id) || s)
-      setCustomStatuts(updatedCustomStatuts)
+      const updatedCustomStatuts = customStatuts.map(
+        (s) => reorderedStatuts.find((rs) => rs.id === s.id) || s
+      );
+      setCustomStatuts(updatedCustomStatuts);
     }
-  }
+  };
 
   const handleSaveChanges = () => {
     // Simuler la sauvegarde vers une API
-    console.log("Saving statuts:", { defaultStatuts, customStatuts })
+    console.log("Saving statuts:", { defaultStatuts, customStatuts });
 
     // Afficher le message de succès
-    setSaveSuccess(true)
-    setTimeout(() => setSaveSuccess(false), 3000)
-  }
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+  };
 
   const colorOptions = [
     { name: "Rouge", value: "#EF4444" },
@@ -245,7 +270,7 @@ export default function StatutsPage() {
     { name: "Gris pierre", value: "#6B7280" },
     { name: "Gris chaud", value: "#A8A29E" },
     { name: "Sarcelle", value: "#0D9488" },
-  ]
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -263,14 +288,19 @@ export default function StatutsPage() {
 
           <div className="flex justify-between items-start">
             <div>
-              <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary border-primary/20">
+              <Badge
+                variant="secondary"
+                className="mb-4 bg-primary/10 text-primary border-primary/20"
+              >
                 Personnalisation
               </Badge>
-              <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-2">
-                Gérer les <span className="text-primary">statuts</span> de candidature
+              <h1 className="text-xl lg:text-2xl font-bold text-foreground mb-2 sm:text-2xl">
+                Gérer les <span className="text-primary">statuts</span> de
+                candidature
               </h1>
               <p className="text-muted-foreground">
-                Personnalisez les statuts pour suivre vos candidatures selon vos besoins
+                Personnalisez les statuts pour suivre vos candidatures selon vos
+                besoins
               </p>
             </div>
             <div className="flex gap-2">
@@ -279,7 +309,10 @@ export default function StatutsPage() {
                   <Check className="h-4 w-4" /> Modifications enregistrées
                 </Badge>
               )}
-              <Button onClick={handleSaveChanges} className="bg-primary hover:bg-primary/90">
+              <Button
+                onClick={handleSaveChanges}
+                className="bg-primary hover:bg-primary/90"
+              >
                 <Save className="h-4 w-4 mr-2" />
                 Enregistrer les modifications
               </Button>
@@ -302,12 +335,14 @@ export default function StatutsPage() {
               {/* Tous les statuts */}
               <TabsContent value="all" className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold">Tous les statuts ({statuts.length})</h2>
+                  <h2 className="text-xl font-semibold">
+                    Tous les statuts ({statuts.length})
+                  </h2>
                   <Dialog
                     open={showDialog && !editingStatut}
                     onOpenChange={(open) => {
-                      setShowDialog(open)
-                      if (!open) setEditingStatut(null)
+                      setShowDialog(open);
+                      if (!open) setEditingStatut(null);
                     }}
                   >
                     <DialogTrigger asChild>
@@ -319,7 +354,10 @@ export default function StatutsPage() {
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Ajouter un nouveau statut</DialogTitle>
-                        <DialogDescription>Créez un statut personnalisé pour suivre vos candidatures</DialogDescription>
+                        <DialogDescription>
+                          Créez un statut personnalisé pour suivre vos
+                          candidatures
+                        </DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4 py-4">
                         <div className="space-y-2">
@@ -327,7 +365,12 @@ export default function StatutsPage() {
                           <Input
                             id="nom"
                             value={newStatut.nom}
-                            onChange={(e) => setNewStatut({ ...newStatut, nom: e.target.value })}
+                            onChange={(e) =>
+                              setNewStatut({
+                                ...newStatut,
+                                nom: e.target.value,
+                              })
+                            }
                             placeholder="Ex: Entretien technique"
                           />
                         </div>
@@ -336,7 +379,12 @@ export default function StatutsPage() {
                           <Input
                             id="description"
                             value={newStatut.description}
-                            onChange={(e) => setNewStatut({ ...newStatut, description: e.target.value })}
+                            onChange={(e) =>
+                              setNewStatut({
+                                ...newStatut,
+                                description: e.target.value,
+                              })
+                            }
                             placeholder="Ex: Entretien technique avec l'équipe"
                           />
                         </div>
@@ -352,7 +400,12 @@ export default function StatutsPage() {
                                     : "border-transparent"
                                 }`}
                                 style={{ backgroundColor: color.value }}
-                                onClick={() => setNewStatut({ ...newStatut, couleur: color.value })}
+                                onClick={() =>
+                                  setNewStatut({
+                                    ...newStatut,
+                                    couleur: color.value,
+                                  })
+                                }
                                 title={color.name}
                               />
                             ))}
@@ -360,7 +413,10 @@ export default function StatutsPage() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowDialog(false)}>
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowDialog(false)}
+                        >
                           Annuler
                         </Button>
                         <Button onClick={handleAddStatut}>Ajouter</Button>
@@ -371,13 +427,15 @@ export default function StatutsPage() {
                   <Dialog
                     open={!!editingStatut}
                     onOpenChange={(open) => {
-                      if (!open) setEditingStatut(null)
+                      if (!open) setEditingStatut(null);
                     }}
                   >
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Modifier le statut</DialogTitle>
-                        <DialogDescription>Modifiez les détails de ce statut personnalisé</DialogDescription>
+                        <DialogDescription>
+                          Modifiez les détails de ce statut personnalisé
+                        </DialogDescription>
                       </DialogHeader>
                       {editingStatut && (
                         <div className="space-y-4 py-4">
@@ -386,15 +444,27 @@ export default function StatutsPage() {
                             <Input
                               id="edit-nom"
                               value={editingStatut.nom}
-                              onChange={(e) => setEditingStatut({ ...editingStatut, nom: e.target.value })}
+                              onChange={(e) =>
+                                setEditingStatut({
+                                  ...editingStatut,
+                                  nom: e.target.value,
+                                })
+                              }
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="edit-description">Description</Label>
+                            <Label htmlFor="edit-description">
+                              Description
+                            </Label>
                             <Input
                               id="edit-description"
                               value={editingStatut.description}
-                              onChange={(e) => setEditingStatut({ ...editingStatut, description: e.target.value })}
+                              onChange={(e) =>
+                                setEditingStatut({
+                                  ...editingStatut,
+                                  description: e.target.value,
+                                })
+                              }
                             />
                           </div>
                           <div className="space-y-2">
@@ -409,7 +479,12 @@ export default function StatutsPage() {
                                       : "border-transparent"
                                   }`}
                                   style={{ backgroundColor: color.value }}
-                                  onClick={() => setEditingStatut({ ...editingStatut, couleur: color.value })}
+                                  onClick={() =>
+                                    setEditingStatut({
+                                      ...editingStatut,
+                                      couleur: color.value,
+                                    })
+                                  }
                                   title={color.name}
                                 />
                               ))}
@@ -418,10 +493,15 @@ export default function StatutsPage() {
                         </div>
                       )}
                       <DialogFooter>
-                        <Button variant="outline" onClick={() => setEditingStatut(null)}>
+                        <Button
+                          variant="outline"
+                          onClick={() => setEditingStatut(null)}
+                        >
                           Annuler
                         </Button>
-                        <Button onClick={handleUpdateStatut}>Enregistrer</Button>
+                        <Button onClick={handleUpdateStatut}>
+                          Enregistrer
+                        </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
@@ -436,15 +516,27 @@ export default function StatutsPage() {
                           <CardContent className="p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: statut.couleur }} />
+                                <div
+                                  className="w-6 h-6 rounded-full"
+                                  style={{ backgroundColor: statut.couleur }}
+                                />
                                 <div>
                                   <div className="flex items-center gap-2">
-                                    <h3 className="font-semibold">{statut.nom}</h3>
-                                    <Badge variant="outline" className="text-xs">
-                                      {statut.type === "system" ? "Système" : "Personnalisé"}
+                                    <h3 className="font-semibold">
+                                      {statut.nom}
+                                    </h3>
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      {statut.type === "system"
+                                        ? "Système"
+                                        : "Personnalisé"}
                                     </Badge>
                                   </div>
-                                  <p className="text-sm text-muted-foreground">{statut.description}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {statut.description}
+                                  </p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
@@ -460,7 +552,9 @@ export default function StatutsPage() {
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => moveStatut(statut.id, "down")}
+                                    onClick={() =>
+                                      moveStatut(statut.id, "down")
+                                    }
                                     disabled={statut.ordre === statuts.length}
                                   >
                                     <ArrowDown className="h-4 w-4" />
@@ -468,10 +562,20 @@ export default function StatutsPage() {
                                 </div>
                                 {statut.type === "custom" && (
                                   <>
-                                    <Button variant="ghost" size="sm" onClick={() => setEditingStatut(statut)}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => setEditingStatut(statut)}
+                                    >
                                       Modifier
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleDeleteStatut(statut.id)}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() =>
+                                        handleDeleteStatut(statut.id)
+                                      }
+                                    >
                                       <Trash2 className="h-4 w-4 text-red-500" />
                                     </Button>
                                   </>
@@ -487,7 +591,9 @@ export default function StatutsPage() {
 
               {/* Statuts système */}
               <TabsContent value="system" className="space-y-6">
-                <h2 className="text-xl font-semibold">Statuts système ({defaultStatuts.length})</h2>
+                <h2 className="text-xl font-semibold">
+                  Statuts système ({defaultStatuts.length})
+                </h2>
                 <div className="space-y-4">
                   {defaultStatuts
                     .sort((a, b) => a.ordre - b.ordre)
@@ -497,10 +603,17 @@ export default function StatutsPage() {
                           <CardContent className="p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: statut.couleur }} />
+                                <div
+                                  className="w-6 h-6 rounded-full"
+                                  style={{ backgroundColor: statut.couleur }}
+                                />
                                 <div>
-                                  <h3 className="font-semibold">{statut.nom}</h3>
-                                  <p className="text-sm text-muted-foreground">{statut.description}</p>
+                                  <h3 className="font-semibold">
+                                    {statut.nom}
+                                  </h3>
+                                  <p className="text-sm text-muted-foreground">
+                                    {statut.description}
+                                  </p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
@@ -516,7 +629,9 @@ export default function StatutsPage() {
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => moveStatut(statut.id, "down")}
+                                    onClick={() =>
+                                      moveStatut(statut.id, "down")
+                                    }
                                     disabled={statut.ordre === statuts.length}
                                   >
                                     <ArrowDown className="h-4 w-4" />
@@ -534,12 +649,14 @@ export default function StatutsPage() {
               {/* Statuts personnalisés */}
               <TabsContent value="custom" className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold">Statuts personnalisés ({customStatuts.length})</h2>
+                  <h2 className="text-xl font-semibold">
+                    Statuts personnalisés ({customStatuts.length})
+                  </h2>
                   <Dialog
                     open={showDialog && !editingStatut}
                     onOpenChange={(open) => {
-                      setShowDialog(open)
-                      if (!open) setEditingStatut(null)
+                      setShowDialog(open);
+                      if (!open) setEditingStatut(null);
                     }}
                   >
                     <DialogTrigger asChild>
@@ -551,7 +668,10 @@ export default function StatutsPage() {
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Ajouter un nouveau statut</DialogTitle>
-                        <DialogDescription>Créez un statut personnalisé pour suivre vos candidatures</DialogDescription>
+                        <DialogDescription>
+                          Créez un statut personnalisé pour suivre vos
+                          candidatures
+                        </DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4 py-4">
                         <div className="space-y-2">
@@ -559,7 +679,12 @@ export default function StatutsPage() {
                           <Input
                             id="nom"
                             value={newStatut.nom}
-                            onChange={(e) => setNewStatut({ ...newStatut, nom: e.target.value })}
+                            onChange={(e) =>
+                              setNewStatut({
+                                ...newStatut,
+                                nom: e.target.value,
+                              })
+                            }
                             placeholder="Ex: Entretien technique"
                           />
                         </div>
@@ -568,7 +693,12 @@ export default function StatutsPage() {
                           <Input
                             id="description"
                             value={newStatut.description}
-                            onChange={(e) => setNewStatut({ ...newStatut, description: e.target.value })}
+                            onChange={(e) =>
+                              setNewStatut({
+                                ...newStatut,
+                                description: e.target.value,
+                              })
+                            }
                             placeholder="Ex: Entretien technique avec l'équipe"
                           />
                         </div>
@@ -584,7 +714,12 @@ export default function StatutsPage() {
                                     : "border-transparent"
                                 }`}
                                 style={{ backgroundColor: color.value }}
-                                onClick={() => setNewStatut({ ...newStatut, couleur: color.value })}
+                                onClick={() =>
+                                  setNewStatut({
+                                    ...newStatut,
+                                    couleur: color.value,
+                                  })
+                                }
                                 title={color.name}
                               />
                             ))}
@@ -592,7 +727,10 @@ export default function StatutsPage() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowDialog(false)}>
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowDialog(false)}
+                        >
                           Annuler
                         </Button>
                         <Button onClick={handleAddStatut}>Ajouter</Button>
@@ -623,10 +761,17 @@ export default function StatutsPage() {
                             <CardContent className="p-4">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className="w-6 h-6 rounded-full" style={{ backgroundColor: statut.couleur }} />
+                                  <div
+                                    className="w-6 h-6 rounded-full"
+                                    style={{ backgroundColor: statut.couleur }}
+                                  />
                                   <div>
-                                    <h3 className="font-semibold">{statut.nom}</h3>
-                                    <p className="text-sm text-muted-foreground">{statut.description}</p>
+                                    <h3 className="font-semibold">
+                                      {statut.nom}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                      {statut.description}
+                                    </p>
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -634,7 +779,9 @@ export default function StatutsPage() {
                                     <Button
                                       variant="ghost"
                                       size="sm"
-                                      onClick={() => moveStatut(statut.id, "up")}
+                                      onClick={() =>
+                                        moveStatut(statut.id, "up")
+                                      }
                                       disabled={statut.ordre === 1}
                                     >
                                       <ArrowUp className="h-4 w-4" />
@@ -642,16 +789,28 @@ export default function StatutsPage() {
                                     <Button
                                       variant="ghost"
                                       size="sm"
-                                      onClick={() => moveStatut(statut.id, "down")}
+                                      onClick={() =>
+                                        moveStatut(statut.id, "down")
+                                      }
                                       disabled={statut.ordre === statuts.length}
                                     >
                                       <ArrowDown className="h-4 w-4" />
                                     </Button>
                                   </div>
-                                  <Button variant="ghost" size="sm" onClick={() => setEditingStatut(statut)}>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setEditingStatut(statut)}
+                                  >
                                     Modifier
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleDeleteStatut(statut.id)}>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleDeleteStatut(statut.id)
+                                    }
+                                  >
                                     <Trash2 className="h-4 w-4 text-red-500" />
                                   </Button>
                                 </div>
@@ -668,5 +827,5 @@ export default function StatutsPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

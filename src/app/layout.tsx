@@ -50,6 +50,7 @@ export default function RootLayout({
     pathname.startsWith("/add-offres") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/candidatures") ||
+    pathname.startsWith("/offres-user") ||
     pathname.startsWith("/recruteur");
 
   const shouldHideLayoutSign =

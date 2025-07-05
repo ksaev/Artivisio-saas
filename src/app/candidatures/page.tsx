@@ -1,17 +1,35 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { FloatingCard, PulsingElement } from "@/components/3d-animations"
-import { BarChart, DonutChart, LineChart, MetricCard, ProgressRing } from "@/components/charts"
-import { entretiens } from "@/lib/data-store"
+import Link from "next/link";
+import { FloatingCard, PulsingElement } from "@/components/3d-animations";
+import {
+  BarChart,
+  DonutChart,
+  LineChart,
+  MetricCard,
+  ProgressRing,
+} from "@/components/charts";
+import { entretiens } from "@/lib/data-store";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Search,
   Plus,
@@ -31,7 +49,7 @@ import {
   Activity,
   Target,
   CheckCircle,
-} from "lucide-react"
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,49 +57,58 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  
-} from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
-
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Types pour les candidatures
 interface Statut {
-  id: string
-  nom: string
-  couleur: string
-  description: string
-  ordre: number
-  type: "system" | "custom"
+  id: string;
+  nom: string;
+  couleur: string;
+  description: string;
+  ordre: number;
+  type: "system" | "custom";
 }
 
 interface Candidature {
-  id: string
-  poste: string
-  entreprise: string
-  lienOffre: string
-  dateCandidature: string
-  statut: string
-  joursDepuisCandidature: number
-  salaire?: string
-  localisation: string
-  typeContrat: string
-  notesPersonnelles?: string
-  messageEnvoye?: string
+  id: string;
+  poste: string;
+  entreprise: string;
+  lienOffre: string;
+  dateCandidature: string;
+  statut: string;
+  joursDepuisCandidature: number;
+  salaire?: string;
+  localisation: string;
+  typeContrat: string;
+  notesPersonnelles?: string;
+  messageEnvoye?: string;
   contactRH?: {
-    nom?: string
-    email?: string
-    telephone?: string
-  }
+    nom?: string;
+    email?: string;
+    telephone?: string;
+  };
 }
 
 interface Entretien {
-  id: string
-  candidatureId: string
-  date: string
-  heure: string
-  notes?: string
+  id: string;
+  candidatureId: string;
+  date: string;
+  heure: string;
+  notes?: string;
 }
 
 // Statuts par défaut du système
@@ -142,7 +169,7 @@ const defaultStatuts: Statut[] = [
     ordre: 7,
     type: "system",
   },
-]
+];
 
 // Données de candidatures simulées
 const candidatures: Candidature[] = [
@@ -176,7 +203,8 @@ const candidatures: Candidature[] = [
     salaire: "Package premium",
     localisation: "Dakar, SN",
     typeContrat: "CDI",
-    notesPersonnelles: "Poste intéressant avec responsabilités importantes. Prévoir relance la semaine prochaine.",
+    notesPersonnelles:
+      "Poste intéressant avec responsabilités importantes. Prévoir relance la semaine prochaine.",
   },
   {
     id: "3",
@@ -189,7 +217,8 @@ const candidatures: Candidature[] = [
     salaire: "Très attractif",
     localisation: "Ouagadougou, BF",
     typeContrat: "Consulting",
-    notesPersonnelles: "Entretien s'est bien passé, attente de retour d'ici fin de semaine.",
+    notesPersonnelles:
+      "Entretien s'est bien passé, attente de retour d'ici fin de semaine.",
   },
   {
     id: "4",
@@ -202,7 +231,8 @@ const candidatures: Candidature[] = [
     salaire: "Excellent package",
     localisation: "Abidjan, CI",
     typeContrat: "CDI",
-    notesPersonnelles: "Refus reçu par email. Raison: profil ne correspondant pas exactement aux attentes.",
+    notesPersonnelles:
+      "Refus reçu par email. Raison: profil ne correspondant pas exactement aux attentes.",
   },
   {
     id: "5",
@@ -240,7 +270,8 @@ const candidatures: Candidature[] = [
     salaire: "À négocier",
     localisation: "Abidjan, CI",
     typeContrat: "CDI",
-    notesPersonnelles: "Relance effectuée par téléphone, RH doit revenir vers moi.",
+    notesPersonnelles:
+      "Relance effectuée par téléphone, RH doit revenir vers moi.",
   },
   {
     id: "8",
@@ -278,36 +309,32 @@ const candidatures: Candidature[] = [
     localisation: "Dakar, SN",
     typeContrat: "CDI",
   },
-]
-
+];
 
 export default function CandidaturesPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedStatut, setSelectedStatut] = useState("tous")
-  const [selectedEntreprise, setSelectedEntreprise] = useState("toutes")
-  const [sortBy, setSortBy] = useState("date_desc")
-  const [viewMode, setViewMode] = useState<"cards" | "table">("table")
-  const [statuts, setStatuts] = useState<Statut[]>([...defaultStatuts])
-  const [customStatuts, setCustomStatuts] = useState<Statut[]>([])
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatut, setSelectedStatut] = useState("tous");
+  const [selectedEntreprise, setSelectedEntreprise] = useState("toutes");
+  const [sortBy, setSortBy] = useState("date_desc");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("table");
+  const [statuts, setStatuts] = useState<Statut[]>([...defaultStatuts]);
+  const [customStatuts, setCustomStatuts] = useState<Statut[]>([]);
 
-  
-
-// Fonction pour obtenir les informations de statut
-const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
-  const statut = statuts.find((s) => s.id === statutId)
-  if (!statut) {
-    return {
-      id: "inconnu",
-      nom: "Inconnu",
-      couleur: "#9CA3AF",
-      description: "Statut inconnu",
-      ordre: Number.MAX_SAFE_INTEGER,
-      type: "system",
+  // Fonction pour obtenir les informations de statut
+  const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
+    const statut = statuts.find((s) => s.id === statutId);
+    if (!statut) {
+      return {
+        id: "inconnu",
+        nom: "Inconnu",
+        couleur: "#9CA3AF",
+        description: "Statut inconnu",
+        ordre: Number.MAX_SAFE_INTEGER,
+        type: "system",
+      };
     }
-  }
-  return statut
-}
-
+    return statut;
+  };
 
   // Simuler le chargement des statuts personnalisés depuis une API
   useEffect(() => {
@@ -329,54 +356,65 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
         ordre: 9,
         type: "custom",
       },
-    ]
+    ];
 
-    setCustomStatuts(savedCustomStatuts)
-    setStatuts([...defaultStatuts, ...savedCustomStatuts])
-  }, [])
+    setCustomStatuts(savedCustomStatuts);
+    setStatuts([...defaultStatuts, ...savedCustomStatuts]);
+  }, []);
 
   // Filtrage et tri des candidatures
   const filteredCandidatures = candidatures
     .filter((candidature) => {
       const matchesSearch =
         candidature.poste.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        candidature.entreprise.toLowerCase().includes(searchTerm.toLowerCase())
+        candidature.entreprise.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatut = selectedStatut === "tous" || candidature.statut === selectedStatut
+      const matchesStatut =
+        selectedStatut === "tous" || candidature.statut === selectedStatut;
 
-      const matchesEntreprise = selectedEntreprise === "toutes" || candidature.entreprise === selectedEntreprise
+      const matchesEntreprise =
+        selectedEntreprise === "toutes" ||
+        candidature.entreprise === selectedEntreprise;
 
-      return matchesSearch && matchesStatut && matchesEntreprise
+      return matchesSearch && matchesStatut && matchesEntreprise;
     })
     .sort((a, b) => {
       switch (sortBy) {
         case "date_desc":
-          return new Date(b.dateCandidature).getTime() - new Date(a.dateCandidature).getTime()
+          return (
+            new Date(b.dateCandidature).getTime() -
+            new Date(a.dateCandidature).getTime()
+          );
         case "date_asc":
-          return new Date(a.dateCandidature).getTime() - new Date(b.dateCandidature).getTime()
+          return (
+            new Date(a.dateCandidature).getTime() -
+            new Date(b.dateCandidature).getTime()
+          );
         case "entreprise":
-          return a.entreprise.localeCompare(b.entreprise)
+          return a.entreprise.localeCompare(b.entreprise);
         case "poste":
-          return a.poste.localeCompare(b.poste)
+          return a.poste.localeCompare(b.poste);
         case "statut":
-          const statutA = getStatutInfo(a.statut, statuts)
-          const statutB = getStatutInfo(b.statut, statuts)
-          return statutA.ordre - statutB.ordre
+          const statutA = getStatutInfo(a.statut, statuts);
+          const statutB = getStatutInfo(b.statut, statuts);
+          return statutA.ordre - statutB.ordre;
         default:
-          return 0
+          return 0;
       }
-    })
+    });
 
   // Statistiques
   const stats = {
     total: candidatures.length,
     enAttente: candidatures.filter((c) => c.statut === "postule").length,
-    entretiens: candidatures.filter((c) => c.statut === "entretien" || c.statut === "entretien_passe").length,
+    entretiens: candidatures.filter(
+      (c) => c.statut === "entretien" || c.statut === "entretien_passe"
+    ).length,
     refusees: candidatures.filter((c) => c.statut === "refus").length,
     acceptees: candidatures.filter((c) => c.statut === "accepte").length,
     sansReponse: candidatures.filter((c) => c.statut === "sans_reponse").length,
     relances: candidatures.filter((c) => c.statut === "relance").length,
-  }
+  };
 
   // Données pour les graphiques
   const statutsData = statuts
@@ -385,79 +423,87 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
       value: candidatures.filter((c) => c.statut === statut.id).length,
       color: statut.couleur,
     }))
-    .filter((item) => item.value > 0)
+    .filter((item) => item.value > 0);
 
-  const entreprisesData = Array.from(new Set(candidatures.map((c) => c.entreprise)))
+  const entreprisesData = Array.from(
+    new Set(candidatures.map((c) => c.entreprise))
+  )
     .map((entreprise) => ({
       label: entreprise,
       value: candidatures.filter((c) => c.entreprise === entreprise).length,
       color: `hsl(${Math.random() * 360}, 70%, 50%)`,
     }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 5)
+    .slice(0, 5);
 
   const evolutionData = [
     { label: "Déc", value: 2, date: "2023-12" },
     { label: "Jan", value: 8, date: "2024-01" },
     { label: "Fév", value: 0, date: "2024-02" },
-  ]
+  ];
 
   // Entreprises uniques pour le filtre
-  const entreprises = Array.from(new Set(candidatures.map((c) => c.entreprise)))
+  const entreprises = Array.from(
+    new Set(candidatures.map((c) => c.entreprise))
+  );
 
   // Générer un lien mailto pour une candidature
   const getMailtoLink = (candidature: Candidature) => {
-    if (!candidature.contactRH?.email) return "#"
+    if (!candidature.contactRH?.email) return "#";
 
     const subject = encodeURIComponent(
-      `Candidature pour le poste de ${candidature.poste} chez ${candidature.entreprise}`,
-    )
-    const body = encodeURIComponent(candidature.messageEnvoye || "")
-    return `mailto:${candidature.contactRH.email}?subject=${subject}&body=${body}`
-  }
+      `Candidature pour le poste de ${candidature.poste} chez ${candidature.entreprise}`
+    );
+    const body = encodeURIComponent(candidature.messageEnvoye || "");
+    return `mailto:${candidature.contactRH.email}?subject=${subject}&body=${body}`;
+  };
 
   // Calculer le taux de réussite
-  const tauxReussite = stats.total > 0 ? Math.round(((stats.acceptees + stats.entretiens) / stats.total) * 100) : 0
-  const tauxReponse = stats.total > 0 ? Math.round(((stats.total - stats.sansReponse) / stats.total) * 100) : 0
+  const tauxReussite =
+    stats.total > 0
+      ? Math.round(((stats.acceptees + stats.entretiens) / stats.total) * 100)
+      : 0;
+  const tauxReponse =
+    stats.total > 0
+      ? Math.round(((stats.total - stats.sansReponse) / stats.total) * 100)
+      : 0;
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 to-accent/10 py-16">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-start mb-8">
-            <div>
-              <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary border-primary/20">
-                <FileText className="w-3 h-3 mr-1" />
-                Suivi des Candidatures
-              </Badge>
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-                Mes <span className="text-primary">candidatures</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl">
-                Suivez l'évolution de toutes vos candidatures en un seul endroit
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button asChild variant="outline">
-                <Link href="/candidatures/statuts">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Gérer les statuts
+          <div className="mb-8">
+            <h1 className="text-xl lg:text-3xl font-bold text-foreground mb-4 sm:text-2xl">
+              Mes <span className="text-primary">candidatures</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl">
+              Suivez l'évolution de toutes vos candidatures en un seul endroit
+            </p>
+          </div>
+          <div className="flex gap-4 items-center mb-6">
+            <Button asChild variant="outline">
+              <Link href="/candidatures/statuts">
+                <Settings className="h-4 w-4 mr-2" />
+                Gérer les statuts
+              </Link>
+            </Button>
+            <PulsingElement>
+              <Button
+                asChild
+                size="lg"
+                className="bg-primary hover:bg-primary/90"
+              >
+                <Link href="/candidatures/nouvelle">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Nouvelle candidature
                 </Link>
               </Button>
-              <PulsingElement>
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                  <Link href="/candidatures/nouvelle">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Nouvelle candidature
-                  </Link>
-                </Button>
-              </PulsingElement>
-            </div>
+            </PulsingElement>
           </div>
 
           {/* Métriques principales */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-1">
             <MetricCard
               title="Total candidatures"
               value={stats.total}
@@ -494,7 +540,7 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
       <section className="py-8 bg-background flex-1">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="liste" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-5 lg:w-fit">
+            <TabsList className="grid w-full grid-cols-3 lg:w-fit sm:grid-cols-5 mb-8 pb-8">
               <TabsTrigger value="liste">Liste des candidatures</TabsTrigger>
               <TabsTrigger value="statistiques">Statistiques</TabsTrigger>
               <TabsTrigger value="entretiens">Entretiens</TabsTrigger>
@@ -503,89 +549,114 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
             </TabsList>
 
             {/* Liste des candidatures */}
-            <TabsContent value="liste" className="space-y-6">
+            <TabsContent value="liste" className="space-y-6 pt-8">
               {/* Filtres et recherche */}
               <Card className="border-primary/10">
-                <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row gap-4 items-end">
-                    <div className="flex-1">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                        <Input
-                          placeholder="Rechercher un poste ou entreprise..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="pl-10 border-primary/20 focus:border-primary"
-                        />
+                <div className="flex flex-col md:flex-row items-center justify-between">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row gap-4 items-end">
+                      <div className="flex flex-wrap gap-2">
+                        <div className="flex-1">
+                          <div className="relative ">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                            <Input
+                              placeholder="Rechercher un poste ou entreprise..."
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              className="pl-10 border-primary/20 focus:border-primary"
+                            />
+                          </div>
+                        </div>
+                        <Select
+                          value={selectedStatut}
+                          onValueChange={setSelectedStatut}
+                        >
+                          <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
+                            <SelectValue placeholder="Statut" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="tous">
+                              Tous les statuts
+                            </SelectItem>
+                            {statuts.map((statut) => (
+                              <SelectItem key={statut.id} value={statut.id}>
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: statut.couleur }}
+                                  />
+                                  {statut.nom}
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+
+                        <Select
+                          value={selectedEntreprise}
+                          onValueChange={setSelectedEntreprise}
+                        >
+                          <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
+                            <SelectValue placeholder="Entreprise" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="toutes">
+                              Toutes les entreprises
+                            </SelectItem>
+                            {entreprises.map((entreprise) => (
+                              <SelectItem key={entreprise} value={entreprise}>
+                                {entreprise}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+
+                        <Select value={sortBy} onValueChange={setSortBy}>
+                          <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
+                            <SelectValue placeholder="Trier par" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="date_desc">
+                              Date (récent)
+                            </SelectItem>
+                            <SelectItem value="date_asc">
+                              Date (ancien)
+                            </SelectItem>
+                            <SelectItem value="entreprise">
+                              Entreprise
+                            </SelectItem>
+                            <SelectItem value="poste">Poste</SelectItem>
+                            <SelectItem value="statut">Statut</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        {/*View Mode*/}
+                        <div className="flex gap-2">
+                          <Button
+                            variant={
+                              viewMode === "cards" ? "default" : "outline"
+                            }
+                            size="icon"
+                            onClick={() => setViewMode("cards")}
+                            className="h-10 w-10"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant={
+                              viewMode === "table" ? "default" : "outline"
+                            }
+                            size="icon"
+                            onClick={() => setViewMode("table")}
+                            className="h-10 w-10"
+                          >
+                            <BarChart3 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      <Select value={selectedStatut} onValueChange={setSelectedStatut}>
-                        <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
-                          <SelectValue placeholder="Statut" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="tous">Tous les statuts</SelectItem>
-                          {statuts.map((statut) => (
-                            <SelectItem key={statut.id} value={statut.id}>
-                              <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: statut.couleur }} />
-                                {statut.nom}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-
-                      <Select value={selectedEntreprise} onValueChange={setSelectedEntreprise}>
-                        <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
-                          <SelectValue placeholder="Entreprise" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="toutes">Toutes les entreprises</SelectItem>
-                          {entreprises.map((entreprise) => (
-                            <SelectItem key={entreprise} value={entreprise}>
-                              {entreprise}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-
-                      <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="border-primary/20 focus:border-primary w-[180px]">
-                          <SelectValue placeholder="Trier par" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="date_desc">Date (récent)</SelectItem>
-                          <SelectItem value="date_asc">Date (ancien)</SelectItem>
-                          <SelectItem value="entreprise">Entreprise</SelectItem>
-                          <SelectItem value="poste">Poste</SelectItem>
-                          <SelectItem value="statut">Statut</SelectItem>
-                        </SelectContent>
-                      </Select>
-
-                      <div className="flex gap-2">
-                        <Button
-                          variant={viewMode === "cards" ? "default" : "outline"}
-                          size="icon"
-                          onClick={() => setViewMode("cards")}
-                          className="h-10 w-10"
-                        >
-                          <FileText className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant={viewMode === "table" ? "default" : "outline"}
-                          size="icon"
-                          onClick={() => setViewMode("table")}
-                          className="h-10 w-10"
-                        >
-                          <BarChart3 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
+                  </CardContent>
+                </div>
               </Card>
 
               {/* Liste des candidatures */}
@@ -593,9 +664,12 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                 <Card className="text-center py-12">
                   <CardContent>
                     <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">Aucune candidature trouvée</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Aucune candidature trouvée
+                    </h3>
                     <p className="text-muted-foreground mb-4">
-                      Modifiez vos critères de recherche ou ajoutez une nouvelle candidature.
+                      Modifiez vos critères de recherche ou ajoutez une nouvelle
+                      candidature.
                     </p>
                     <Button asChild>
                       <Link href="/candidatures/nouvelle">
@@ -608,7 +682,10 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
               ) : viewMode === "cards" ? (
                 <div className="space-y-4">
                   {filteredCandidatures.map((candidature) => {
-                    const statutInfo = getStatutInfo(candidature.statut, statuts)
+                    const statutInfo = getStatutInfo(
+                      candidature.statut,
+                      statuts
+                    );
                     return (
                       <FloatingCard key={candidature.id}>
                         <Card className="border-primary/10 hover:border-primary/30 transition-all duration-300">
@@ -626,19 +703,30 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                   >
                                     <div
                                       className="w-2 h-2 rounded-full"
-                                      style={{ backgroundColor: statutInfo.couleur }}
+                                      style={{
+                                        backgroundColor: statutInfo.couleur,
+                                      }}
                                     />
                                     {statutInfo.nom}
                                   </Badge>
-                                  {candidature.joursDepuisCandidature > 21 && candidature.statut === "postule" && (
-                                    <Badge variant="outline" className="border-orange-200 text-orange-600">
-                                      <Clock className="h-3 w-3 mr-1" />
-                                      {candidature.joursDepuisCandidature} jours
-                                    </Badge>
-                                  )}
+                                  {candidature.joursDepuisCandidature > 21 &&
+                                    candidature.statut === "postule" && (
+                                      <Badge
+                                        variant="outline"
+                                        className="border-orange-200 text-orange-600"
+                                      >
+                                        <Clock className="h-3 w-3 mr-1" />
+                                        {
+                                          candidature.joursDepuisCandidature
+                                        }{" "}
+                                        jours
+                                      </Badge>
+                                    )}
                                 </div>
 
-                                <h3 className="text-lg font-semibold text-foreground mb-2">{candidature.poste}</h3>
+                                <h3 className="text-lg font-semibold text-foreground mb-2">
+                                  {candidature.poste}
+                                </h3>
 
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                                   <div className="flex items-center gap-1">
@@ -647,19 +735,27 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <Calendar className="h-4 w-4" />
-                                    {new Date(candidature.dateCandidature).toLocaleDateString("fr-FR")}
+                                    {new Date(
+                                      candidature.dateCandidature
+                                    ).toLocaleDateString("fr-FR")}
                                   </div>
                                 </div>
 
                                 <div className="flex items-center gap-4 text-sm">
-                                  <span className="text-muted-foreground">{candidature.localisation}</span>
-                                  <span className="text-primary font-medium">{candidature.salaire}</span>
+                                  <span className="text-muted-foreground">
+                                    {candidature.localisation}
+                                  </span>
+                                  <span className="text-primary font-medium">
+                                    {candidature.salaire}
+                                  </span>
                                 </div>
                               </div>
 
                               <div className="flex flex-col gap-2 ml-4">
                                 <Button asChild size="sm">
-                                  <Link href={`/candidatures/${candidature.id}`}>
+                                  <Link
+                                    href={`/candidatures/${candidature.id}`}
+                                  >
                                     <Eye className="h-4 w-4 mr-1" />
                                     Détails
                                   </Link>
@@ -687,19 +783,27 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                       </DropdownMenuItem>
                                     )}
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuLabel>Changer le statut</DropdownMenuLabel>
+                                    <DropdownMenuLabel>
+                                      Changer le statut
+                                    </DropdownMenuLabel>
                                     {statuts.map((statut) => (
                                       <DropdownMenuItem
                                         key={statut.id}
                                         className="flex items-center gap-2"
-                                        disabled={candidature.statut === statut.id}
+                                        disabled={
+                                          candidature.statut === statut.id
+                                        }
                                       >
                                         <div
                                           className="w-3 h-3 rounded-full"
-                                          style={{ backgroundColor: statut.couleur }}
+                                          style={{
+                                            backgroundColor: statut.couleur,
+                                          }}
                                         />
                                         {statut.nom}
-                                        {candidature.statut === statut.id && <Check className="h-4 w-4 ml-auto" />}
+                                        {candidature.statut === statut.id && (
+                                          <Check className="h-4 w-4 ml-auto" />
+                                        )}
                                       </DropdownMenuItem>
                                     ))}
                                   </DropdownMenuContent>
@@ -709,7 +813,7 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                           </CardContent>
                         </Card>
                       </FloatingCard>
-                    )
+                    );
                   })}
                 </div>
               ) : (
@@ -724,12 +828,17 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                             <TableHead>Date</TableHead>
                             <TableHead>Statut</TableHead>
                             <TableHead>Localisation</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead className="text-right">
+                              Actions
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {filteredCandidatures.map((candidature) => {
-                            const statutInfo = getStatutInfo(candidature.statut, statuts)
+                            const statutInfo = getStatutInfo(
+                              candidature.statut,
+                              statuts
+                            );
                             return (
                               <TableRow key={candidature.id}>
                                 <TableCell className="font-medium">
@@ -745,9 +854,15 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                   <TooltipProvider>
                                     <Tooltip>
                                       <TooltipTrigger>
-                                        {new Date(candidature.dateCandidature).toLocaleDateString("fr-FR")}
+                                        {new Date(
+                                          candidature.dateCandidature
+                                        ).toLocaleDateString("fr-FR")}
                                       </TooltipTrigger>
-                                      <TooltipContent>Il y a {candidature.joursDepuisCandidature} jours</TooltipContent>
+                                      <TooltipContent>
+                                        Il y a{" "}
+                                        {candidature.joursDepuisCandidature}{" "}
+                                        jours
+                                      </TooltipContent>
                                     </Tooltip>
                                   </TooltipProvider>
                                 </TableCell>
@@ -761,36 +876,50 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                       >
                                         <div
                                           className="w-2 h-2 rounded-full"
-                                          style={{ backgroundColor: statutInfo.couleur }}
+                                          style={{
+                                            backgroundColor: statutInfo.couleur,
+                                          }}
                                         />
                                         {statutInfo.nom}
                                         <ChevronsUpDown className="h-3 w-3 opacity-50" />
                                       </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="start">
-                                      <DropdownMenuLabel>Changer le statut</DropdownMenuLabel>
+                                      <DropdownMenuLabel>
+                                        Changer le statut
+                                      </DropdownMenuLabel>
                                       {statuts.map((statut) => (
                                         <DropdownMenuItem
                                           key={statut.id}
                                           className="flex items-center gap-2"
-                                          disabled={candidature.statut === statut.id}
+                                          disabled={
+                                            candidature.statut === statut.id
+                                          }
                                         >
                                           <div
                                             className="w-3 h-3 rounded-full"
-                                            style={{ backgroundColor: statut.couleur }}
+                                            style={{
+                                              backgroundColor: statut.couleur,
+                                            }}
                                           />
                                           {statut.nom}
-                                          {candidature.statut === statut.id && <Check className="h-4 w-4 ml-auto" />}
+                                          {candidature.statut === statut.id && (
+                                            <Check className="h-4 w-4 ml-auto" />
+                                          )}
                                         </DropdownMenuItem>
                                       ))}
                                     </DropdownMenuContent>
                                   </DropdownMenu>
                                 </TableCell>
-                                <TableCell>{candidature.localisation}</TableCell>
+                                <TableCell>
+                                  {candidature.localisation}
+                                </TableCell>
                                 <TableCell className="text-right">
                                   <div className="flex justify-end gap-2">
                                     <Button asChild size="sm" variant="ghost">
-                                      <Link href={`/candidatures/${candidature.id}`}>
+                                      <Link
+                                        href={`/candidatures/${candidature.id}`}
+                                      >
                                         <Eye className="h-4 w-4" />
                                       </Link>
                                     </Button>
@@ -809,7 +938,7 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                                   </div>
                                 </TableCell>
                               </TableRow>
-                            )
+                            );
                           })}
                         </TableBody>
                       </Table>
@@ -818,7 +947,6 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                 </Card>
               )}
             </TabsContent>
-
 
             {/* Statistiques */}
             <TabsContent value="statistiques" className="space-y-6">
@@ -852,12 +980,20 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                 <FloatingCard>
                   <Card className="border-primary/10">
                     <CardHeader>
-                      <CardTitle className="text-lg">Taux de conversion</CardTitle>
-                      <CardDescription>Progression dans le processus de recrutement</CardDescription>
+                      <CardTitle className="text-lg">
+                        Taux de conversion
+                      </CardTitle>
+                      <CardDescription>
+                        Progression dans le processus de recrutement
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex justify-center">
-                        <ProgressRing percentage={tauxReussite} color="#10B981" label="Taux de réussite" />
+                        <ProgressRing
+                          percentage={tauxReussite}
+                          color="#10B981"
+                          label="Taux de réussite"
+                        />
                       </div>
                       <div className="space-y-3">
                         <div className="flex justify-between text-sm">
@@ -866,11 +1002,15 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>Réponses reçues</span>
-                          <span className="font-medium">{stats.total - stats.sansReponse}</span>
+                          <span className="font-medium">
+                            {stats.total - stats.sansReponse}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>Entretiens obtenus</span>
-                          <span className="font-medium">{stats.entretiens}</span>
+                          <span className="font-medium">
+                            {stats.entretiens}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>Offres reçues</span>
@@ -884,13 +1024,21 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                 <FloatingCard>
                   <Card className="border-primary/10">
                     <CardHeader>
-                      <CardTitle className="text-lg">Analyse temporelle</CardTitle>
-                      <CardDescription>Temps de réponse moyen des entreprises</CardDescription>
+                      <CardTitle className="text-lg">
+                        Analyse temporelle
+                      </CardTitle>
+                      <CardDescription>
+                        Temps de réponse moyen des entreprises
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="text-center">
-                        <div className="text-3xl font-bold text-primary">12</div>
-                        <div className="text-sm text-muted-foreground">jours en moyenne</div>
+                        <div className="text-3xl font-bold text-primary">
+                          12
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          jours en moyenne
+                        </div>
                       </div>
                       <div className="space-y-3">
                         <div className="flex justify-between text-sm">
@@ -903,7 +1051,9 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>Sans réponse (&gt;21j)</span>
-                          <span className="font-medium">{stats.sansReponse}</span>
+                          <span className="font-medium">
+                            {stats.sansReponse}
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -919,26 +1069,33 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                       <TrendingUp className="h-5 w-5 text-primary" />
                       Insights et recommandations
                     </CardTitle>
-                    <CardDescription>Analyses basées sur vos données de candidature</CardDescription>
+                    <CardDescription>
+                      Analyses basées sur vos données de candidature
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full" />
-                          <span className="font-medium text-green-800">Point fort</span>
+                          <span className="font-medium text-green-800">
+                            Point fort
+                          </span>
                         </div>
                         <p className="text-sm text-green-700">
                           Excellent taux de conversion en entretien (
-                          {Math.round((stats.entretiens / stats.total) * 100)}%). Votre profil semble bien correspondre
-                          aux postes visés.
+                          {Math.round((stats.entretiens / stats.total) * 100)}
+                          %). Votre profil semble bien correspondre aux postes
+                          visés.
                         </p>
                       </div>
 
                       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                          <span className="font-medium text-blue-800">Recommandation</span>
+                          <span className="font-medium text-blue-800">
+                            Recommandation
+                          </span>
                         </div>
                         <p className="text-sm text-blue-700">
                           {stats.sansReponse > 0 &&
@@ -950,10 +1107,13 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                       <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                          <span className="font-medium text-orange-800">Opportunité</span>
+                          <span className="font-medium text-orange-800">
+                            Opportunité
+                          </span>
                         </div>
                         <p className="text-sm text-orange-700">
-                          Vous avez candidaté principalement chez {entreprisesData[0]?.label}. Diversifiez vos
+                          Vous avez candidaté principalement chez{" "}
+                          {entreprisesData[0]?.label}. Diversifiez vos
                           candidatures pour augmenter vos chances.
                         </p>
                       </div>
@@ -961,10 +1121,13 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                       <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                          <span className="font-medium text-purple-800">Tendance</span>
+                          <span className="font-medium text-purple-800">
+                            Tendance
+                          </span>
                         </div>
                         <p className="text-sm text-purple-700">
-                          Augmentation de 25% des candidatures ce mois-ci. Maintenez cette dynamique pour maximiser vos
+                          Augmentation de 25% des candidatures ce mois-ci.
+                          Maintenez cette dynamique pour maximiser vos
                           opportunités.
                         </p>
                       </div>
@@ -977,7 +1140,9 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
             {/* Entretiens */}
             <TabsContent value="entretiens" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-foreground">Mes Entretiens</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Mes Entretiens
+                </h2>
                 <Button asChild>
                   <Link href="/candidatures/entretiens">
                     <Calendar className="ml-2 h-4 w-4" />
@@ -1000,29 +1165,46 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         .filter((e) => new Date(e.date) > new Date())
                         .slice(0, 3)
                         .map((entretien) => {
-                          const candidature = candidatures.find((c) => c.id === entretien.candidatureId)
+                          const candidature = candidatures.find(
+                            (c) => c.id === entretien.candidatureId
+                          );
                           const joursRestants = Math.ceil(
-                            (new Date(entretien.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-                          )
+                            (new Date(entretien.date).getTime() -
+                              new Date().getTime()) /
+                              (1000 * 60 * 60 * 24)
+                          );
 
                           return (
-                            <div key={entretien.id} className="p-3 border border-primary/10 rounded-lg">
+                            <div
+                              key={entretien.id}
+                              className="p-3 border border-primary/10 rounded-lg"
+                            >
                               <div className="flex justify-between items-start mb-2">
-                                <h4 className="font-medium text-sm">{candidature?.poste || "Entretien"}</h4>
+                                <h4 className="font-medium text-sm">
+                                  {candidature?.poste || "Entretien"}
+                                </h4>
                                 <Badge variant="outline" className="text-xs">
                                   Dans {joursRestants} jour(s)
                                 </Badge>
                               </div>
-                              <p className="text-sm text-muted-foreground mb-1">{candidature?.entreprise}</p>
+                              <p className="text-sm text-muted-foreground mb-1">
+                                {candidature?.entreprise}
+                              </p>
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Clock className="h-3 w-3" />
-                                {new Date(entretien.date).toLocaleDateString("fr-FR")} à {entretien.heure}
+                                {new Date(entretien.date).toLocaleDateString(
+                                  "fr-FR"
+                                )}{" "}
+                                à {entretien.heure}
                               </div>
                             </div>
-                          )
+                          );
                         })}
-                      {entretiens.filter((e) => new Date(e.date) > new Date()).length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-4">Aucun entretien planifié</p>
+                      {entretiens.filter((e) => new Date(e.date) > new Date())
+                        .length === 0 && (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Aucun entretien planifié
+                        </p>
                       )}
                     </CardContent>
                   </Card>
@@ -1041,26 +1223,40 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         .filter((e) => new Date(e.date) <= new Date())
                         .slice(0, 3)
                         .map((entretien) => {
-                          const candidature = candidatures.find((c) => c.id === entretien.candidatureId)
+                          const candidature = candidatures.find(
+                            (c) => c.id === entretien.candidatureId
+                          );
 
                           return (
-                            <div key={entretien.id} className="p-3 border border-primary/10 rounded-lg opacity-75">
+                            <div
+                              key={entretien.id}
+                              className="p-3 border border-primary/10 rounded-lg opacity-75"
+                            >
                               <div className="flex justify-between items-start mb-2">
-                                <h4 className="font-medium text-sm">{candidature?.poste || "Entretien"}</h4>
+                                <h4 className="font-medium text-sm">
+                                  {candidature?.poste || "Entretien"}
+                                </h4>
                                 <Badge variant="secondary" className="text-xs">
                                   Terminé
                                 </Badge>
                               </div>
-                              <p className="text-sm text-muted-foreground mb-1">{candidature?.entreprise}</p>
+                              <p className="text-sm text-muted-foreground mb-1">
+                                {candidature?.entreprise}
+                              </p>
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Clock className="h-3 w-3" />
-                                {new Date(entretien.date).toLocaleDateString("fr-FR")}
+                                {new Date(entretien.date).toLocaleDateString(
+                                  "fr-FR"
+                                )}
                               </div>
                             </div>
-                          )
+                          );
                         })}
-                      {entretiens.filter((e) => new Date(e.date) <= new Date()).length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-4">Aucun entretien passé</p>
+                      {entretiens.filter((e) => new Date(e.date) <= new Date())
+                        .length === 0 && (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Aucun entretien passé
+                        </p>
                       )}
                     </CardContent>
                   </Card>
@@ -1078,17 +1274,27 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         <TrendingUp className="h-5 w-5 text-primary" />
                         Évolution des candidatures
                       </CardTitle>
-                      <CardDescription>Suivi de vos candidatures par mois</CardDescription>
+                      <CardDescription>
+                        Suivi de vos candidatures par mois
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-4">
                         <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                          <span className="text-sm font-medium">Janvier 2024</span>
-                          <span className="text-lg font-bold text-primary">8 candidatures</span>
+                          <span className="text-sm font-medium">
+                            Janvier 2024
+                          </span>
+                          <span className="text-lg font-bold text-primary">
+                            8 candidatures
+                          </span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
-                          <span className="text-sm font-medium">Décembre 2023</span>
-                          <span className="text-lg font-bold text-muted-foreground">2 candidatures</span>
+                          <span className="text-sm font-medium">
+                            Décembre 2023
+                          </span>
+                          <span className="text-lg font-bold text-muted-foreground">
+                            2 candidatures
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -1106,10 +1312,13 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         <div className="p-3 border border-yellow-200 bg-yellow-50 rounded-lg">
                           <div className="flex items-center gap-2 mb-1">
                             <Clock className="h-4 w-4 text-yellow-600" />
-                            <span className="text-sm font-medium">Relance recommandée</span>
+                            <span className="text-sm font-medium">
+                              Relance recommandée
+                            </span>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            {stats.sansReponse} candidature(s) sans réponse depuis plus de 21 jours
+                            {stats.sansReponse} candidature(s) sans réponse
+                            depuis plus de 21 jours
                           </p>
                         </div>
                       )}
@@ -1117,10 +1326,13 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                         <div className="p-3 border border-green-200 bg-green-50 rounded-lg">
                           <div className="flex items-center gap-2 mb-1">
                             <Calendar className="h-4 w-4 text-green-600" />
-                            <span className="text-sm font-medium">Entretiens à préparer</span>
+                            <span className="text-sm font-medium">
+                              Entretiens à préparer
+                            </span>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            {stats.entretiens} entretien(s) prévu(s) ou en attente de retour
+                            {stats.entretiens} entretien(s) prévu(s) ou en
+                            attente de retour
                           </p>
                         </div>
                       )}
@@ -1139,34 +1351,54 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
                       <Activity className="h-5 w-5 text-primary" />
                       Centre de notifications
                     </CardTitle>
-                    <CardDescription>Gérez vos alertes et rappels</CardDescription>
+                    <CardDescription>
+                      Gérez vos alertes et rappels
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between p-3 border border-primary/10 rounded-lg">
                         <div>
-                          <h4 className="font-medium text-sm">Rappel de relance</h4>
-                          <p className="text-sm text-muted-foreground">Après 14 jours sans réponse</p>
+                          <h4 className="font-medium text-sm">
+                            Rappel de relance
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Après 14 jours sans réponse
+                          </p>
                         </div>
-                        <Badge variant="default" className="bg-primary/10 text-primary">
+                        <Badge
+                          variant="default"
+                          className="bg-primary/10 text-primary"
+                        >
                           Activé
                         </Badge>
                       </div>
 
                       <div className="flex items-center justify-between p-3 border border-primary/10 rounded-lg">
                         <div>
-                          <h4 className="font-medium text-sm">Notification entretien</h4>
-                          <p className="text-sm text-muted-foreground">Quand un entretien est confirmé</p>
+                          <h4 className="font-medium text-sm">
+                            Notification entretien
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Quand un entretien est confirmé
+                          </p>
                         </div>
-                        <Badge variant="default" className="bg-primary/10 text-primary">
+                        <Badge
+                          variant="default"
+                          className="bg-primary/10 text-primary"
+                        >
                           Activé
                         </Badge>
                       </div>
 
                       <div className="flex items-center justify-between p-3 border border-muted-foreground/20 rounded-lg">
                         <div>
-                          <h4 className="font-medium text-sm">Rapport hebdomadaire</h4>
-                          <p className="text-sm text-muted-foreground">Résumé de vos candidatures</p>
+                          <h4 className="font-medium text-sm">
+                            Rapport hebdomadaire
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Résumé de vos candidatures
+                          </p>
                         </div>
                         <Badge variant="outline">Désactivé</Badge>
                       </div>
@@ -1179,5 +1411,5 @@ const getStatutInfo = (statutId: string, statuts: Statut[]): Statut => {
         </div>
       </section>
     </div>
-  )
+  );
 }
