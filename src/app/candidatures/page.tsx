@@ -481,25 +481,29 @@ export default function CandidaturesPage() {
               Suivez l'évolution de toutes vos candidatures en un seul endroit
             </p>
           </div>
-          <div className="flex gap-4 items-center mb-6">
-            <Button asChild variant="outline">
-              <Link href="/candidatures/statuts">
-                <Settings className="h-4 w-4 mr-2" />
-                Gérer les statuts
-              </Link>
-            </Button>
-            <PulsingElement>
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90"
-              >
-                <Link href="/candidatures/nouvelle">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nouvelle candidature
+          <div className=" gap-6 items-center mb-6 grid grid-cols-1  sm:grid-cols-2">
+            <div>
+              <Button asChild variant="outline">
+                <Link href="/candidatures/statuts">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Gérer les statuts
                 </Link>
               </Button>
-            </PulsingElement>
+            </div>
+            <div>
+              <PulsingElement>
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 "
+                >
+                  <Link href="/candidatures/nouvelle">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nouvelle candidature
+                  </Link>
+                </Button>
+              </PulsingElement>
+            </div>
           </div>
 
           {/* Métriques principales */}
@@ -538,10 +542,10 @@ export default function CandidaturesPage() {
 
       {/* Contenu principal */}
       <section className="py-8 bg-background flex-1">
-        <div className="container mx-auto px-4">
+        <div className="container mx-2 px-4">
           <Tabs defaultValue="liste" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-3 lg:w-fit sm:grid-cols-5 mb-8 pb-8">
-              <TabsTrigger value="liste">Liste des candidatures</TabsTrigger>
+            <TabsList className="grid grid-cols-3 lg:w-fit sm:grid-cols-5 ">
+              <TabsTrigger value="liste">Candidatures</TabsTrigger>
               <TabsTrigger value="statistiques">Statistiques</TabsTrigger>
               <TabsTrigger value="entretiens">Entretiens</TabsTrigger>
               <TabsTrigger value="tableau">Tableau de bord</TabsTrigger>
