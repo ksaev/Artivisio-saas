@@ -286,22 +286,18 @@ export default function StatutsPage() {
             </Button>
           </div>
 
-          <div className="flex justify-between items-start">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 items-center justify-between gap-4">
             <div>
-              <Badge
-                variant="secondary"
-                className="mb-4 bg-primary/10 text-primary border-primary/20"
-              >
-                Personnalisation
-              </Badge>
-              <h1 className="text-xl lg:text-2xl font-bold text-foreground mb-2 sm:text-2xl">
-                Gérer les <span className="text-primary">statuts</span> de
-                candidature
-              </h1>
-              <p className="text-muted-foreground">
-                Personnalisez les statuts pour suivre vos candidatures selon vos
-                besoins
-              </p>
+              <div className="mb-4">
+                <h1 className="text-xl lg:text-2xl font-bold text-foreground mb-2 sm:text-2xl">
+                  Gérer les <span className="text-primary">statuts</span> de
+                  candidature
+                </h1>
+                <p className="text-muted-foreground">
+                  Personnalisez les statuts pour suivre vos candidatures selon
+                  vos besoins
+                </p>
+              </div>
             </div>
             <div className="flex gap-2">
               {saveSuccess && (
@@ -328,8 +324,8 @@ export default function StatutsPage() {
             <Tabs defaultValue="all" className="space-y-8">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all">Tous les statuts</TabsTrigger>
-                <TabsTrigger value="system">Statuts système</TabsTrigger>
-                <TabsTrigger value="custom">Statuts personnalisés</TabsTrigger>
+                <TabsTrigger value="system">Système</TabsTrigger>
+                <TabsTrigger value="custom">Personnalisés</TabsTrigger>
               </TabsList>
 
               {/* Tous les statuts */}
